@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href=“https://github.com/UW-INFO442-AU24/Team-Pesto”> 
-    <img src="" alt="PainPal logo (describe here)" width="200" height="200">
+    <img src="frontend/images/PainPal_Logo.png" alt="PainPal logo (describe here)" width="200" height="200">
   </a>
 
   <h1 align="center">PainPal</h1>
@@ -170,7 +170,7 @@ Our app aims to empower individuals by providing accessible, personalized, and d
 ## Contact
 
 <p>Joey Kang - <a href="https://www.linkedin.com/in/joey--kang/">LinkedIn</a> - <a href= "mailto: joeykang@uw.edu"> joeykang@uw.edu </a></p>
-<p>Diana Y Nhi Tran - <a href="https://www.linkedin.com/in/diana-tran-33b30a217/">LinkedIn</a> - <a href= "mailto: dianayt@uw.edu"> dianayt@uw.edu </a></p>
+<p>Diana Tran - <a href="https://www.linkedin.com/in/diana-tran-33b30a217/">LinkedIn</a> - <a href= "mailto: dianayt@uw.edu"> dianayt@uw.edu </a></p>
 <p>Cam Bun - <a href="https://www.linkedin.com/in/woncamm-bun/">LinkedIn</a> - <a href= "mailto: wbun@uw.edu"> safaj03@uw.edu </a></p>
 <p>Kai Tinder - <a href="https://www.linkedin.com/in/kai-tinder/">LinkedIn</a> - <a href= "mailto: kaitinde@uw.edu"> mshett@uw.edu </a></p>
 <p>Eric Kim - <a href="https://www.linkedin.com/in/eric-kim-uw-info/">LinkedIn</a> - <a href= "mailto: kimeri21@uw.edu"> miranair@uw.edu </a></p>
