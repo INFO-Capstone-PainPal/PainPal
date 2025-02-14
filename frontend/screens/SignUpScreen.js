@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import tw from "tailwind-react-native-classnames"; 
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import tw from "tailwind-react-native-classnames";
 
-const SignUpScreen = ({ navigation }) => {
+export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,21 +13,23 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={tw`flex-1 justify-center px-4`}>
-      <Text style={[tw`text-3xl font-bold text-center mb-6`, styles.title]}>
-        Create an Account
+    <View style={[styles.container, tw`flex-1 justify-center px-6`]}>
+      <Text style={[tw`text-white text-3xl font-bold text-center mb-8`]}>
+        Create Account
       </Text>
 
       <TextInput
-        style={[tw`h-10 border rounded px-3 mb-4`, styles.input]}
-        placeholder="Full Name"
+        style={[styles.input, tw`h-12 mb-6`]}
+        placeholder="Your name"
+        placeholderTextColor="#999"
         value={name}
         onChangeText={setName}
       />
 
       <TextInput
-        style={[tw`h-10 border rounded px-3 mb-4`, styles.input]}
-        placeholder="Email"
+        style={[styles.input, tw`h-12 mb-6`]}
+        placeholder="Your email"
+        placeholderTextColor="#999"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -35,37 +37,50 @@ const SignUpScreen = ({ navigation }) => {
       />
 
       <TextInput
-        style={[tw`h-10 border rounded px-3 mb-4`, styles.input]}
+        style={[styles.input, tw`h-12 mb-6`]}
         placeholder="Password"
+        placeholderTextColor="#999"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
 
       <TextInput
-        style={[tw`h-10 border rounded px-3 mb-6`, styles.input]}
+        style={[styles.input, tw`h-12 mb-6`]}
         placeholder="Confirm Password"
+        placeholderTextColor="#999"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
 
-      <Button title="Sign Up" onPress={handleSignUp} />
-      <View style={tw`mt-4`}>
-        <Button title="Back to Login" onPress={() => navigation.navigate("Login")} />
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={tw`text-white text-center font-bold text-lg`}>Sign up</Text>
+      </TouchableOpacity>
+
+      <View style={tw`mt-6 flex-row justify-center`}>
+        <Text style={tw`text-white`}>Already have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={tw`text-white font-bold`}>Log in</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  title: {
-    color: "black", // Keep color in StyleSheet
+  container: {
+    backgroundColor: "#39345B",
   },
   input: {
-    borderColor: "gray", // Keep color in StyleSheet
-    borderWidth: 1, // Border thickness
+    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  button: {
+    backgroundColor: "#6A7DFF",
+    paddingVertical: 12,
+    borderRadius: 8,
   },
 });
-
-export default SignUpScreen;
