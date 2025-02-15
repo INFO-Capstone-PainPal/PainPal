@@ -171,9 +171,9 @@ Our app aims to empower individuals by providing accessible, personalized, and d
 
 <p>Joey Kang - <a href="https://www.linkedin.com/in/joey--kang/">LinkedIn</a> - <a href= "mailto: joeykang@uw.edu"> joeykang@uw.edu </a></p>
 <p>Diana Tran - <a href="https://www.linkedin.com/in/diana-tran-33b30a217/">LinkedIn</a> - <a href= "mailto: dianayt@uw.edu"> dianayt@uw.edu </a></p>
-<p>Cam Bun - <a href="https://www.linkedin.com/in/woncamm-bun/">LinkedIn</a> - <a href= "mailto: wbun@uw.edu"> safaj03@uw.edu </a></p>
-<p>Kai Tinder - <a href="https://www.linkedin.com/in/kai-tinder/">LinkedIn</a> - <a href= "mailto: kaitinde@uw.edu"> mshett@uw.edu </a></p>
-<p>Eric Kim - <a href="https://www.linkedin.com/in/eric-kim-uw-info/">LinkedIn</a> - <a href= "mailto: kimeri21@uw.edu"> miranair@uw.edu </a></p>
+<p>Cam Bun - <a href="https://www.linkedin.com/in/woncamm-bun/">LinkedIn</a> - <a href= "mailto: wbun@uw.edu"> wbun@uw.edu </a></p>
+<p>Kai Tinder - <a href="https://www.linkedin.com/in/kai-tinder/">LinkedIn</a> - <a href= "mailto: kaitinde@uw.edu"> kaitinde@uw.edu </a></p>
+<p>Eric Kim - <a href="https://www.linkedin.com/in/eric-kim-uw-info/">LinkedIn</a> - <a href= "mailto: kimeri21@uw.edu"> kimeri21@uw.edu </a></p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
