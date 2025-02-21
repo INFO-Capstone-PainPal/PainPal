@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href=“https://github.com/UW-INFO442-AU24/Team-Pesto”> 
-    <img src="frontend/images/PainPal_Logo.png" alt="PainPal logo (describe here)" width="200" height="200">
+    <img src="frontend/assets/PainPal_Logo.png" alt="PainPal logo (describe here)" width="200" height="200">
   </a>
 
   <h1 align="center">PainPal</h1>
