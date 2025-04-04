@@ -9,8 +9,8 @@ user.Base.metadata.create_all(bind=engine)
 migraines.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="AU24: INFO 442 Team Pesto",
-    description="Postpartum Depression Web App",
+    title="PainPal",
+    description="Migraine Tracking Mobile App",
     version="1.0.0"
 )
 

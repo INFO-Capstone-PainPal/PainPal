@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from db.db_setup import Base
 
 class Migraines(Base):
-    """
+    """ 
     Migraines logged by user
     """
     __tablename__ = "migraines"
@@ -16,6 +16,6 @@ class Migraines(Base):
     pain_level = Column(Integer, nullable=False)
     pain_map = Column(Integer, nullable=False)
     timestamp = Column(DateTime, server_default=func.now(), nullable=False) # first click = initial time, second click = migraine end but you can change when it ends manually if needed
-    weather = Column(JSON, nulluable = True)
+    weather = Column(JSON, nullable = True)
     
     user = relationship("User", back_populates="migraines")
