@@ -16,7 +16,7 @@ class MigraineBase(BaseModel):
     """
     Base schema for Migraine data.
     """
-    userid: int
+    user_id: int
     pain_level: int
     pain_map: int
     weather: Optional[WeatherData] = None 
@@ -33,10 +33,6 @@ class MigraineCompleteUpdate(BaseModel):
     pain_map: Optional[int] = None
     weather: Optional[WeatherData] = None
 
-class MigraineCompleteUpdate(BaseModel):
-    pain_level: Optional[int] = None
-    pain_map: Optional[int] = None
-    weather: Optional[WeatherData] = None
 
 class MigraineCreate(MigraineBase):
     pass
@@ -46,7 +42,7 @@ class Migraine(MigraineBase):
     Schema for returning Migraine data (includes ID and timestamp).
     """
     id: int
-    userid: int
+    user_id: int
     timestamp: datetime
     pain_level: Optional[int]
     pain_map: Optional[int]

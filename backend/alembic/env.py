@@ -26,7 +26,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from db.models.user import User
-from backend.db.models.migraine import Migraines
+from db.models.migraine import Migraine
 target_metadata = Base.metadata
 
 # Override the sqlalchemy.url from the .env file
