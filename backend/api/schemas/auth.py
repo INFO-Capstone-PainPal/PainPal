@@ -11,8 +11,11 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
-    full_name: Optional[str] = None
     password: Optional[str] = None
+
+    model_config = {
+        "from_attributes": True
+    }
 
 class User(UserBase):
     id: int

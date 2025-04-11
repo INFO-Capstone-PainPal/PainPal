@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from typing import Optional
 
-from backend.api.crud import migraine as crud_migraine
+from api.crud import migraine as crud_migraine
 from api.schemas.migraine import Migraine, MigraineCompleteUpdate, MigraineQuickCreate
 from db.models.user import User
 from db.db_setup import get_db

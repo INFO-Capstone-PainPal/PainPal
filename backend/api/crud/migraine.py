@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-from backend.db.models.migraine import Migraine
+from db.models.migraine import Migraine
 from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate
 from typing import Optional
 
