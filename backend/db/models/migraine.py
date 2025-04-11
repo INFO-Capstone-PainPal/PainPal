@@ -5,14 +5,19 @@ from sqlalchemy.orm import relationship
 
 from db.db_setup import Base
 
+<<<<<<< Updated upstream:backend/db/models/migraines.py
 class Migraines(Base):
     """
+=======
+class Migraine(Base):
+    """ 
+>>>>>>> Stashed changes:backend/db/models/migraine.py
     Migraines logged by user
     """
     __tablename__ = "migraines"
 
     id = Column(Integer, primary_key=True, index=True)
-    userid = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     pain_level = Column(Integer, nullable=False)
     pain_map = Column(Integer, nullable=False)
     timestamp = Column(DateTime, server_default=func.now(), nullable=False) # first click = initial time, second click = migraine end but you can change when it ends manually if needed
