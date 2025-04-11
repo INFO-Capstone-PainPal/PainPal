@@ -6,10 +6,13 @@ from sqlalchemy.orm import relationship
 from db.db_setup import Base
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream:backend/db/models/migraines.py
 class Migraines(Base):
     """
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 class Migraine(Base):
