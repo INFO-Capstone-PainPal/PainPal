@@ -13,9 +13,10 @@ class Migraine(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=True)
     pain_level = Column(Integer, nullable=True) # allow it to be missing for quick logging
     pain_map = Column(Integer, nullable=True) # ditto
-    timestamp = Column(DateTime, server_default=func.now(), nullable=False) # first click = initial time, second click = migraine end but you can change when it ends manually if needed
     weather = Column(JSON, nullable=True)
     
     user = relationship("User", back_populates="migraines")

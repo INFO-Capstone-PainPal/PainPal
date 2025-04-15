@@ -1,32 +1,32 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
+from typing import Optional
 
 from db.models.migraine import Migraine
 from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate
-from typing import Optional
 
 def create_migraine_log(db: Session, migraine: MigraineCreate, user_id: int):
-    db_migraine = Migraine(**migraine.model_dump*(), user_id=user_id)
+    db_migraine = Migraine(**migraine.model_dump(), user_id=user_id)
     db.add(db_migraine)
     db.commit()
     db.refresh(db_migraine)
     return db_migraine
 
 def get_migraine_from_user(db: Session, migraine_id: int, user_id: int):
-    migraine = db.query(Migraine).filter(Migraine.id == migraine_id, Migraine.user_id == user_id).first()
-    return migraine
+    return db.query(Migraine).filter(Migraine.id == migraine_id, Migraine.user_id == user_id).first()
 
 def get_migraines_for_month(db: Session, user_id: int, year: int, month: int):
     start_date = datetime(year, month, 1)
-    if month == 12:
-        end_date = datetime(year + 1, 1, 1)
-    else:
-        end_date = datetime(year, month + 1, 1)
+    end_date = datetime(year + int(month == 12), (month % 12) + 1, 1)
 
-    return db.query(Migraine).filter(Migraine.user_id == user_id, Migraine.timestamp >= start_date, Migraine.timestamp < end_date).order_by(Migraine.timestamp).all()
+    return db.query(Migraine).filter(
+        Migraine.user_id == user_id,
+        Migraine.start_time >= start_date,
+        Migraine.start_time < end_date
+    ).order_by(Migraine.start_time).all()
 
-def quick_create_migraine(db: Session, user_id: int, timestamp: Optional[datetime] = None):
-    migraine = Migraine(user_id=user_id, timestamp=timestamp or datetime.now())
+def quick_create_migraine(db: Session, user_id: int, start_time: datetime):
+    migraine = Migraine(user_id=user_id, start_time=start_time)
     db.add(migraine)
     db.commit()
     db.refresh(migraine)
@@ -34,7 +34,6 @@ def quick_create_migraine(db: Session, user_id: int, timestamp: Optional[datetim
 
 def complete_migraine_log(db: Session, user_id: int, migraine_id: int, update_data: MigraineCompleteUpdate):
     migraine = db.query(Migraine).filter(Migraine.id == migraine_id, Migraine.user_id == user_id).first()
-
     if not migraine:
         return None
     

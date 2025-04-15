@@ -26,27 +26,25 @@ class MigraineQuickCreate(BaseModel):
     """
     Schema for creating a new Migraine entry.
     """
-    timestamp: Optional[datetime] = None
+    start_time: datetime
 
 class MigraineCompleteUpdate(BaseModel):
+    start_time: Optional[datetime] = None
+    end_time: datetime
     pain_level: Optional[int] = None
     pain_map: Optional[int] = None
     weather: Optional[WeatherData] = None
-
 
 class MigraineCreate(MigraineBase):
     pass
 
 class Migraine(MigraineBase):
     """
-    Schema for returning Migraine data (includes ID and timestamp).
+    Schema for returning Migraine data
     """
     id: int
-    user_id: int
-    timestamp: datetime
-    pain_level: Optional[int]
-    pain_map: Optional[int]
-    weather: Optional[WeatherData]
+    start_time: datetime
+    end_time: datetime
 
     class Config:
         orm_mode = True
