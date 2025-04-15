@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from datetime import datetime
-from typing import Optional
 
 from api.crud import migraine as crud_migraine
 from api.schemas.migraine import Migraine, MigraineCompleteUpdate, MigraineQuickCreate
