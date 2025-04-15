@@ -13,7 +13,7 @@
   <h1 align="center">PainPal</h1>
 
   <p align="center">
-    A mobile or web app that helps users track and visualize chronic migraine pain along with related health symptoms daily—without needing external medical records or hospital integration.
+    A mobile app that helps users track and visualize chronic migraine pain along with related health symptoms daily—without needing external medical records or hospital integration.
     <br />
   </p>
 </div>
