@@ -3,16 +3,32 @@ import { View, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import TimePickerComponent from "../components/TimePickerComponent";
 
-export default function LoggingScreen({ navigation }) {
+export default function LoggingScreen({ navigation, route }) {
   const [endDateTime, setEndDateTime] = useState(new Date());
 
   const handleNext = () => {
     navigation.navigate("Logging", { startDateTime });
   };
 
+  const log = route?.params?.log;
+
   return (
     <View style={[styles.container, tw`flex-1`]}>
       <Text style={tw`text-white text-2xl font-bold mt-14 ml-5`}>Log</Text>
+
+      {log && (
+        <View style={[styles.card, tw`mx-5 mt-5 p-4`]}>
+          <Text style={tw`text-white text-lg font-bold mb-2`}>
+            Dummy Log (passed from Calendar)
+          </Text>
+          <Text style={tw`text-white text-base`}>
+            ID: {log.id}
+          </Text>
+          <Text style={tw`text-white text-base`}>
+            Title: {log.title}
+          </Text>
+        </View>
+      )}
 
       <View style={[styles.card, tw`mx-5 mt-5 p-5`]}>
         <TimePickerComponent title="End Time" onDateTimeChange={setEndDateTime} />
@@ -36,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   nextButton: {
-    backgroundColor: "#6A7DFF",
+    backgroundColor: "#8191FF",
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 10,

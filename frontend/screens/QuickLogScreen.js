@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import TimePickerComponent from "../components/TimePickerComponent";
 
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   nextButton: {
-    backgroundColor: "#6A7DFF",
+    backgroundColor: "#8191FF",
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 10,
