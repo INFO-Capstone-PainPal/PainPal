@@ -43,8 +43,12 @@ class Migraine(MigraineBase):
     Schema for returning Migraine data
     """
     id: int
+    user_id: int
     start_time: datetime
-    end_time: datetime
+    end_time: Optional[datetime] = None
+    pain_level: Optional[int] = None    
+    pain_map: Optional[int] = None       
+    weather: Optional[WeatherData] = None
 
     class Config:
         orm_mode = True
