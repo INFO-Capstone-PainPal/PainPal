@@ -17,3 +17,4 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
 
     migraines = relationship("Migraine", back_populates="user", cascade="all, delete-orphan")
+    checkins = relationship("CheckIn", back_populates="user", cascade="all, delete-orphan")

@@ -4,6 +4,7 @@ from typing import Optional, List
 
 from api.schemas.symptom import SymptomOption 
 from api.schemas.trigger import TriggerOption
+from api.schemas.medication import MedicationOption
 
 class WeatherData(BaseModel):
     temperature: float
@@ -11,6 +12,7 @@ class WeatherData(BaseModel):
     description: str
     longitude: float
     latitude: float
+    pressure: float
 
 # Schema for quick log
 class MigraineQuickCreate(BaseModel):
@@ -24,6 +26,7 @@ class MigraineCompleteUpdate(BaseModel):
     weather: Optional[WeatherData] = None
     symptoms: Optional[List[int]] = None 
     triggers: Optional[List[int]] = None
+    medications: Optional[List[int]] = None
 
 class MigraineCreate(BaseModel):
     start_time: datetime
@@ -42,7 +45,8 @@ class Migraine(BaseModel):
     pain_map: Optional[int] = None
     weather: Optional[WeatherData] = None
     symptoms: Optional[List[SymptomOption]] = None
-    triggers: Optional[List[TriggerOption]] = None 
+    triggers: Optional[List[TriggerOption]] = None
+    medications: Optional[List[MedicationOption]] = None
 
     class Config:
         orm_mode = True
