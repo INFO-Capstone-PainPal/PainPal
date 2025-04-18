@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy_utils import EmailType
 from sqlalchemy.orm import relationship
 
@@ -15,6 +15,8 @@ class User(Base):
     full_name = Column(String(64))
     email = Column(EmailType, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    streak = Column(Integer, default=0, nullable=False)
+    last_checkin_date = Column(Date, nullable=True)
 
     migraines = relationship("Migraine", back_populates="user", cascade="all, delete-orphan")
     checkins = relationship("CheckIn", back_populates="user", cascade="all, delete-orphan")

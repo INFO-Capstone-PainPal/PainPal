@@ -10,4 +10,4 @@ router = APIRouter()
 
 @router.post("/check-in", response_model=CheckIn)
 def submit_checkin(data: CheckInCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
-    return crud_checkin.create_checkin(db, user_id=current_user.id, checkin_data=data)
+    return crud_checkin.create_checkin_with_streak(db, user=current_user, checkin_data=data)
