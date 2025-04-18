@@ -1,12 +1,19 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
-from typing import Optional
 
+from api.schemas.symptom import SymptomOption
+from api.schemas.trigger import TriggerOption
 from db.models.migraine import Migraine
 from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate
 
 def create_migraine_log(db: Session, migraine: MigraineCreate, user_id: int):
-    db_migraine = Migraine(**migraine.model_dump(), user_id=user_id)
+    db_migraine = Migraine(**migraine.model_dump(exclude={"symptoms", "triggers"}), user_id=user_id)
+
+    if migraine.symptom_option_ids:
+        db_migraine.symptoms = db.query(SymptomOption).filter(SymptomOption.id.in_(migraine.symptom_option_ids)).all()
+    if migraine.trigger_option_ids:
+        db_migraine.triggers = db.query(TriggerOption).filter(TriggerOption.id.in_(migraine.trigger_option_ids)).all()
+
     db.add(db_migraine)
     db.commit()
     db.refresh(db_migraine)
@@ -36,9 +43,14 @@ def complete_migraine_log(db: Session, user_id: int, migraine_id: int, update_da
     migraine = db.query(Migraine).filter(Migraine.id == migraine_id, Migraine.user_id == user_id).first()
     if not migraine:
         return None
-    
+
     for field, value in update_data.model_dump(exclude_unset=True).items():
-        setattr(migraine, field, value)
+        if field == "symptom_option_ids":
+            migraine.symptoms = db.query(SymptomOption).filter(SymptomOption.id.in_(value)).all()
+        elif field == "trigger_option_ids":
+            migraine.triggers = db.query(TriggerOption).filter(TriggerOption.id.in_(value)).all()
+        else:
+            setattr(migraine, field, value)
 
     db.commit()
     db.refresh(migraine)
