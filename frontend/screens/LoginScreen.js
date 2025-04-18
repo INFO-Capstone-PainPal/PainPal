@@ -9,6 +9,7 @@ export default function LoginScreen({ navigation }) {
 
   const [fontsLoaded] = useFonts({
     Pacifico: require("../assets/fonts/Pacifico-Regular.ttf"),
+    FunnelSans: require('../assets/fonts/FunnelSans.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -16,7 +17,7 @@ export default function LoginScreen({ navigation }) {
   }
 
   const handleLogin = () => {
-    
+    navigation.navigate("Main")
   };
 
   return (
