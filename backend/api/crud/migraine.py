@@ -3,16 +3,19 @@ from datetime import datetime
 
 from api.schemas.symptom import SymptomOption
 from api.schemas.trigger import TriggerOption
+from api.schemas.medication import MedicationOption
 from db.models.migraine import Migraine
 from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate
 
 def create_migraine_log(db: Session, migraine: MigraineCreate, user_id: int):
-    db_migraine = Migraine(**migraine.model_dump(exclude={"symptoms", "triggers"}), user_id=user_id)
+    db_migraine = Migraine(**migraine.model_dump(exclude={"symptoms", "triggers", "medications"}), user_id=user_id)
 
     if migraine.symptom_option_ids:
         db_migraine.symptoms = db.query(SymptomOption).filter(SymptomOption.id.in_(migraine.symptom_option_ids)).all()
     if migraine.trigger_option_ids:
         db_migraine.triggers = db.query(TriggerOption).filter(TriggerOption.id.in_(migraine.trigger_option_ids)).all()
+    if migraine.medication_option_ids:
+        db_migraine.medications = db.query(MedicationOption).filter(MedicationOption.id.in_(migraine.medication_option_ids)).all()
 
     db.add(db_migraine)
     db.commit()

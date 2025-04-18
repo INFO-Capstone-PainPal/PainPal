@@ -1,12 +1,8 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, Table
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from db.db_setup import Base
-
-association_trigger = Table(
-    "migraine_triggers", Base.metadata,
-    Column("migraine_id", ForeignKey("migraines.id"), primary_key=True),
-    Column("trigger_option_id", ForeignKey("trigger_options.id"), primary_key=True)
-)
+from db.models.associations import association_trigger
 
 class TriggerOption(Base):
     """
@@ -16,3 +12,5 @@ class TriggerOption(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, nullable=False)
+
+    migraines = relationship("Migraine", secondary=association_trigger, back_populates="triggers")
