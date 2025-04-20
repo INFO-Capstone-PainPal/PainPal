@@ -1,12 +1,8 @@
 from fastapi import FastAPI
 import logging
 
-from api.routers import users, auth, migraines
-from db.db_setup import engine
-from db.models import user, migraine
-
-user.Base.metadata.create_all(bind=engine)
-migraine.Base.metadata.create_all(bind=engine)
+from api.routers import users, auth, migraines, check_in
+from db.models import *
 
 app = FastAPI(
     title="PainPal",
@@ -21,3 +17,4 @@ logger = logging.getLogger(__name__)
 app.include_router(users.router, prefix="/users")
 app.include_router(auth.router)
 app.include_router(migraines.router, prefix="/migraines")
+app.include_router(check_in.router, prefix="/check-in")
