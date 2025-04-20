@@ -18,3 +18,10 @@ association_medication = Table(
     Column("migraine_id", ForeignKey("migraines.id"), primary_key=True),
     Column("medication_option_id", ForeignKey("medication_options.id"), primary_key=True)
 )
+
+checkin_medications = Table(
+    "checkin_medications",
+    Base.metadata,
+    Column("checkin_id", ForeignKey("checkins.id"), primary_key=True),
+    Column("medication_option_id", ForeignKey("medication_options.id"), primary_key=True),
+)

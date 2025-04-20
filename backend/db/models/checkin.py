@@ -1,23 +1,19 @@
-from sqlalchemy import Column, Integer, ForeignKey, Date, Table, UniqueConstraint
+from sqlalchemy import Column, Integer, ForeignKey, Date, UniqueConstraint
 from sqlalchemy.orm import relationship
-from db.db_setup import Base
+from datetime import date
 
-checkin_medications = Table(
-    "checkin_medications",
-    Base.metadata,
-    Column("checkin_id", ForeignKey("checkins.id"), primary_key=True),
-    Column("medication_option_id", ForeignKey("medication_options.id"), primary_key=True),
-)
+from db.db_setup import Base
+from db.models.associations import checkin_medications
 
 class CheckIn(Base):
     __tablename__ = "checkins"
     __table_args__ = (
-        UniqueConstraint('user_id', 'date', name='uix_user_date'),
+        UniqueConstraint('user_id', 'checkin_date', name='uix_user_date'),
     )
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    date = Column(Date, nullable=False) 
+    checkin_date = Column(Date, nullable=False, default=date.today)
     had_migraine = Column(Integer, nullable=False)  # 0 = no, 1 = yes
 
     medications = relationship("MedicationOption", secondary=checkin_medications, backref="checkins")
