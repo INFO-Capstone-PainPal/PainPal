@@ -3,6 +3,7 @@ from sqlalchemy_utils import EmailType
 from sqlalchemy.orm import relationship
 
 from db.db_setup import Base
+from db.models.checkin import CheckIn
 
 class User(Base):
     """
