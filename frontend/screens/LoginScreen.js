@@ -36,7 +36,7 @@ export default function LoginScreen({ navigation }) {
 
       await AsyncStorage.setItem("access_token", data.access_token);
 
-      navigation.replace("Logging");
+      navigation.replace("QuickLog");
     } catch (e) {
       console.error("Login error", e);
       setError(e.message);

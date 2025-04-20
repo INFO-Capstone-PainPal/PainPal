@@ -34,8 +34,8 @@ export default function SignUpScreen({ navigation }) {
       }
 
       console.log("User created:", data);
-      navigation.navigate("Login");
-    } catch (e) {
+      navigation.goBack()
+      } catch (e) {
       setError(e.message);
     }
   };
@@ -94,7 +94,7 @@ export default function SignUpScreen({ navigation }) {
 
       <View style={tw`mt-6 flex-row justify-center`}>
         <Text style={tw`text-white`}>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={tw`text-white font-bold`}>Log in</Text>
         </TouchableOpacity>
       </View>
