@@ -1,39 +1,69 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useFonts } from "expo-font";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import tw from "tailwind-react-native-classnames";
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const [fontsLoaded] = useFonts({
     Pacifico: require("../assets/fonts/Pacifico-Regular.ttf"),
   });
-
   if (!fontsLoaded) {
     return null;
   }
 
-  const handleLogin = () => {
-    
+  const handleLogin = async () => {
+    setError("");
+    try {
+      // build multipart form
+      const form = new FormData();
+      form.append("username", username);
+      form.append("password", password);
+
+      const res = await fetch("http://localhost:8000/token", {
+        method: "POST",
+        body: form,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Incorrect username or password");
+      }
+
+      await AsyncStorage.setItem("access_token", data.access_token);
+
+      navigation.replace("Logging");
+    } catch (e) {
+      console.error("Login error", e);
+      setError(e.message);
+    }
   };
 
   return (
     <View style={[styles.container, tw`flex-1 justify-center px-6`]}>
       <View style={tw`items-center mb-6`}>
-        <Image source={require("../assets/PainPal_Logo.png")} style={styles.logo} />
+        <Image source={require("../assets/PainPal_Logo.png")} style={styles.logo}/>
       </View>
       <Text style={[tw`text-white text-4xl text-center pt-6 mb-6`, styles.pacifico]}>
         PainPal
       </Text>
+
+      {!!error && (
+        <Text style={tw`text-red-400 text-center mb-4`}>
+          {error}
+        </Text>
+      )}
+ 
       <TextInput
         style={[styles.input, tw`h-12 mb-6`]}
-        placeholder="Email"
+        placeholder="Username"
         placeholderTextColor="#999"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
+        value={username}
+        onChangeText={setUsername}
         autoCapitalize="none"
       />
 
@@ -46,7 +76,7 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry
       />
 
-      <TouchableOpacity onPress={() => {/* handle forgot password */}} style={tw`mb-6`}>
+      <TouchableOpacity onPress={() => {}} style={tw`mb-6`}>
         <Text style={tw`text-white text-right`}>Forgot Password?</Text>
       </TouchableOpacity>
 
@@ -69,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#39345B",
   },
   logo: {
-    width: 200, 
+    width: 200,
     height: 200,
     borderRadius: 100,
   },

@@ -7,9 +7,37 @@ export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSignUp = () => {
-    
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8000/users/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          full_name: name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || "Failed to register");
+      }
+
+      console.log("User created:", data);
+      navigation.navigate("Login");
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   return (
@@ -20,7 +48,7 @@ export default function SignUpScreen({ navigation }) {
 
       <TextInput
         style={[styles.input, tw`h-12 mb-6`]}
-        placeholder="Your name"
+        placeholder="Username"
         placeholderTextColor="#999"
         value={name}
         onChangeText={setName}
@@ -28,7 +56,7 @@ export default function SignUpScreen({ navigation }) {
 
       <TextInput
         style={[styles.input, tw`h-12 mb-6`]}
-        placeholder="Your email"
+        placeholder="Email"
         placeholderTextColor="#999"
         value={email}
         onChangeText={setEmail}
@@ -53,6 +81,12 @@ export default function SignUpScreen({ navigation }) {
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
+
+      {!!error && (
+        <Text style={tw`text-red-400 mb-4 text-center`}>
+          {error}
+        </Text>
+      )}
 
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={tw`text-white text-center font-bold text-lg`}>Sign up</Text>
