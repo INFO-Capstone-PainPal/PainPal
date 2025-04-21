@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import TimePickerComponent from "../components/TimePickerComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const BASE_URL = "http://localhost:8000";
+
+// For Android emulator, use this instead:
+// const BASE_URL = "http://10.0.2.2:8000";
 
 export default function LoggingScreen({ navigation, route }) {
   const { logId } = route.params; 
@@ -21,7 +26,7 @@ export default function LoggingScreen({ navigation, route }) {
 
       const token = await AsyncStorage.getItem("access_token");
 
-      const res = await fetch(`http://localhost:8000/migraines/${logId}/complete`, {
+      const res = await fetch(`${BASE_URL}/migraines/${logId}/complete`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

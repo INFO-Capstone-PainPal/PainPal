@@ -4,6 +4,11 @@ import { useFonts } from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import tw from "tailwind-react-native-classnames";
 
+const BASE_URL = "http://localhost:8000";
+
+// For Android emulator, use this instead:
+// const BASE_URL = "http://10.0.2.2:8000";
+
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +29,7 @@ export default function LoginScreen({ navigation }) {
       form.append("username", username);
       form.append("password", password);
 
-      const res = await fetch("http://localhost:8000/token", {
+      const res = await fetch(`${BASE_URL}/token`, {
         method: "POST",
         body: form,
       });
