@@ -8,7 +8,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from db.db_setup import Base 
-from db.models import migraine, symptom, trigger, medication, associations
+from db.models import user, migraine, checkin, medication, symptom, trigger
 
 # Load environment variables from .env file
 load_dotenv()
