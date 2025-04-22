@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from api.schemas.symptom import SymptomOption
 from api.schemas.trigger import TriggerOption
@@ -25,9 +25,17 @@ def create_migraine_log(db: Session, migraine: MigraineCreate, user_id: int):
 def get_migraine_from_user(db: Session, migraine_id: int, user_id: int):
     return db.query(Migraine).filter(Migraine.id == migraine_id, Migraine.user_id == user_id).first()
 
+
 def get_migraines_for_month(db: Session, user_id: int, year: int, month: int):
-    start_date = datetime(year, month, 1)
-    end_date = datetime(year + int(month == 12), (month % 12) + 1, 1)
+    start_of_month = datetime(year, month, 1)
+    start_date = start_of_month - timedelta(days=7)
+
+    if month == 12:
+        end_of_month = datetime(year + 1, 1, 1)
+    else:
+        end_of_month = datetime(year, month + 1, 1)
+    
+    end_date = end_of_month + timedelta(days=7)
 
     return db.query(Migraine).filter(
         Migraine.user_id == user_id,
