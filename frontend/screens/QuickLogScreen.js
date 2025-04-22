@@ -46,8 +46,34 @@ export default function QuickLogScreen({ navigation }) {
     }
   };
 
-  const handleSaveForLater = () => {
-    navigation.navigate("Home");
+  const handleSaveForLater = async () => {
+    try {
+      // Format the date and time to match the expected format, not UTC time
+      const localTimeString =
+        `${startDateTime.getFullYear()}-${pad(startDateTime.getMonth() + 1)}-${pad(startDateTime.getDate())}` +
+        `T${pad(startDateTime.getHours())}:${pad(startDateTime.getMinutes())}:00`;
+
+      const token = await AsyncStorage.getItem("access_token");
+
+      const res = await fetch(`${BASE_URL}/migraines/quick-log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          start_time: localTimeString,
+        }), 
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Could not start log");
+      }
+
+      navigation.navigate("Main", { screen: "Home" });
+    } catch (e) {
+      console.error("QuickLog error", e);
+    }
   };
 
   return (

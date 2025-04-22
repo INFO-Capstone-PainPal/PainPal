@@ -45,6 +45,8 @@ export default function LoggingScreen({ navigation, route }) {
       if (!res.ok) {
         throw new Error(data.detail || "Failed to save log");
       }
+
+      navigation.navigate("Main");
     } catch (e) {
       console.error("Logging error", e);
     }

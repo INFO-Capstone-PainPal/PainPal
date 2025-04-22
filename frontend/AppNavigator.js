@@ -31,7 +31,7 @@ function NavBar() {
             icon = faHouse;
           } else if (route.name === "Calendar") {
             icon = faCalendarDays;
-          } else if (route.name === "Logging") {
+          } else if (route.name === "QuickLog") {
             icon = faSquarePlus;
           } else if (route.name === "Charts") {
             icon = faChartColumn;
@@ -53,7 +53,7 @@ function NavBar() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="Logging" component={LoggingScreen} options={{
+      <Tab.Screen name="QuickLog" component={QuickLogScreen} options={{
           tabBarButton: (props) => 
           (<TouchableOpacity style={styles.customButtonContainer} onPress={props.onPress}>
             <LinearGradient colors={['#675FA6', '#86B6FF']} style={styles.gradientCircle}>
