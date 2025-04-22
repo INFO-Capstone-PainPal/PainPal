@@ -22,7 +22,7 @@ class MigraineCompleteUpdate(BaseModel):
     start_time: Optional[datetime] = None
     end_time: datetime
     pain_level: Optional[int] = None
-    pain_map: Optional[List[int]] = None
+    pain_map: Optional[int] = None
     weather: Optional[WeatherData] = None
     symptoms: Optional[List[int]] = None 
     triggers: Optional[List[int]] = None
@@ -32,7 +32,7 @@ class MigraineCreate(BaseModel):
     start_time: datetime
     end_time: Optional[datetime] = None
     pain_level: Optional[int] = None
-    pain_map: Optional[List[int]] = None
+    pain_map: Optional[int] = None
     weather: Optional[WeatherData] = None
     symptoms: Optional[List[int]] = None
     triggers: Optional[List[int]] = None
@@ -42,7 +42,7 @@ class Migraine(BaseModel):
     start_time: datetime
     end_time: Optional[datetime] = None
     pain_level: Optional[int] = None
-    pain_map: Optional[List[int]] = None
+    pain_map: Optional[int] = None
     weather: Optional[WeatherData] = None
     symptoms: Optional[List[SymptomOption]] = None
     triggers: Optional[List[TriggerOption]] = None
