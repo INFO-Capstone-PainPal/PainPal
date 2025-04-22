@@ -111,6 +111,17 @@ export default function LoggingScreen({ navigation, route }) {
             Medications ({selectedMedications.length})
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("PainMap")
+          }
+          style={styles.selectorButton}
+        >
+          <Text style={tw`text-white`}>
+            Pain Map
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={tw`flex-row justify-between items-center mt-6 mx-5`}>

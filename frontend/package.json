@@ -38,7 +38,8 @@
     "react-native-web": "~0.19.13",
     "react-native-wheel-pick": "^1.2.2",
     "react-native-wheel-picker-expo": "^0.5.4",
-    "tailwind-react-native-classnames": "^3.0.1"
+    "tailwind-react-native-classnames": "^3.0.1",
+    "@react-native-community/slider": "4.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

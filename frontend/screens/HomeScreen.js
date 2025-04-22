@@ -55,7 +55,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { flexGrow: 1 }]}>
+    <ScrollView contentContainerStyle={[styles.container, tw`justify-center px-6`, { flexGrow: 1 }]} style={{ backgroundColor: "#39345B" }}>
       <Text style={[tw`font-bold`, styles.header]}>
         Hello, {name}!
       </Text>
@@ -79,9 +79,13 @@ export default function HomeScreen() {
 
           const hourNum = hour.displayDateTime?.hours;
           const label = index === 0 ? "Now" : `${(hourNum % 12 || 12)} ${hourNum >= 12 ? "PM" : "AM"}`;
+          var isNow;
+          if (label === "Now") {
+            isNow = true;
+          }
 
           return (
-            <View key={index} style={styles.weatherCard}>
+            <View key={index} style={[isNow? styles.now : styles.future, styles.weatherCard]}>
               <Text style={styles.weatherTime}>{label}</Text>
               <SvgUri style={styles.weatherIcon} uri={iconUrl} accessible={true} accessibilityLabel={condition}/>
               <Text style={styles.weatherTemp}>{temp}&deg;</Text>
@@ -131,8 +135,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#6A6DCD',
     borderRadius: 8
   },
+  future: {
+    backgroundColor: '#48319D33'
+  },
+  now: {
+    backgroundColor: '#86B6FF'
+  },
   weatherCard: {
-    backgroundColor: '#48319D33',
     borderRadius: 30,
     paddingTop: 16,
     paddingBottom: 16,
