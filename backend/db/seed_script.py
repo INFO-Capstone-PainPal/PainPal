@@ -1,14 +1,13 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from sqlalchemy.orm import Session
-
-from db.db_setup import SessionLocal
-from db.models.symptom import SymptomOption
-from db.models.trigger import TriggerOption
-from db.models.medication import MedicationOption
+from db_setup import SessionLocal
+from models.symptom import SymptomOption
+from models.trigger import TriggerOption
+from models.medication import MedicationOption
 
 # Run "python seed_script.py" !
 symptom_list = [
@@ -54,7 +53,7 @@ def seed_symptoms_and_triggers(db: Session):
             db.add(MedicationOption(name=name))
 
     db.commit()
-    print("Seeded symptom_options and trigger_options and medication_options!")
+    print("Seeded symptom_options and trigger_options!")
 
 if __name__ == "__main__":
     db = SessionLocal()
