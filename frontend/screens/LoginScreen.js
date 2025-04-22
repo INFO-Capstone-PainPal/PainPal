@@ -16,7 +16,9 @@ export default function LoginScreen({ navigation }) {
 
   const [fontsLoaded] = useFonts({
     Pacifico: require("../assets/fonts/Pacifico-Regular.ttf"),
+    FunnelSans: require('../assets/fonts/FunnelSans.ttf')
   });
+
   if (!fontsLoaded) {
     return null;
   }
@@ -41,7 +43,7 @@ export default function LoginScreen({ navigation }) {
 
       await AsyncStorage.setItem("access_token", data.access_token);
 
-      navigation.replace("QuickLog");
+      navigation.navigate("Main");
     } catch (e) {
       console.error("Login error", e);
       setError(e.message);
