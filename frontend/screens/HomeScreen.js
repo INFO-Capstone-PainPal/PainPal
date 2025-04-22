@@ -36,6 +36,11 @@ export default function HomeScreen() {
 
   // Fetch weather
   const weatherApiAsync = async () => {
+    if (!location || !location.coords) {
+      console.warn("Location data not ready yet.");
+      return;
+    }
+
     const { latitude, longitude } = location.coords;
 
     try {
