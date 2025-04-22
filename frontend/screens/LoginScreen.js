@@ -27,21 +27,21 @@ export default function LoginScreen({ navigation }) {
     setError("");
     try {
       // build multipart form
-      // const form = new FormData();
-      // form.append("username", username);
-      // form.append("password", password);
+      const form = new FormData();
+      form.append("username", username);
+      form.append("password", password);
 
-      // const res = await fetch(`${BASE_URL}/token`, {
-      //   method: "POST",
-      //   body: form,
-      // });
+      const res = await fetch(`${BASE_URL}/token`, {
+        method: "POST",
+        body: form,
+      });
 
-      // const data = await res.json();
-      // if (!res.ok) {
-      //   throw new Error(data.detail || "Incorrect username or password");
-      // }
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Incorrect username or password");
+      }
 
-      // await AsyncStorage.setItem("access_token", data.access_token);
+      await AsyncStorage.setItem("access_token", data.access_token);
 
       navigation.navigate("Main");
     } catch (e) {
