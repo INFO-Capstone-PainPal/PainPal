@@ -20,4 +20,6 @@ class User(Base):
     last_checkin_date = Column(Date, nullable=True)
 
     migraines = relationship("Migraine", back_populates="user", cascade="all, delete-orphan")
+
+    from db.models.checkin import CheckIn
     checkins = relationship("CheckIn", back_populates="user", cascade="all, delete-orphan")

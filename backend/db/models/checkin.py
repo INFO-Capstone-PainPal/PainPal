@@ -1,9 +1,15 @@
 from sqlalchemy import Column, Integer, ForeignKey, Date, UniqueConstraint
 from sqlalchemy.orm import relationship
+<<<<<<< Updated upstream
 from datetime import date
 
 from db.db_setup import Base
 from db.models.associations import checkin_medications
+=======
+
+from db.models.associations import checkin_medications
+from db.db_setup import Base
+>>>>>>> Stashed changes
 
 class CheckIn(Base):
     __tablename__ = "checkins"

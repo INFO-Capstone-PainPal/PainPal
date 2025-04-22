@@ -24,4 +24,8 @@ checkin_medications = Table(
     Base.metadata,
     Column("checkin_id", ForeignKey("checkins.id"), primary_key=True),
     Column("medication_option_id", ForeignKey("medication_options.id"), primary_key=True),
+<<<<<<< Updated upstream
 )
+=======
+)
+>>>>>>> Stashed changes
