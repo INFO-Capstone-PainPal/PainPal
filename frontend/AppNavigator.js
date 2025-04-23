@@ -10,7 +10,10 @@ import LoggingScreen from "./screens/LoggingScreen";
 import ChartsScreen from "./screens/ChartsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import QuickLogScreen from "./screens/QuickLogScreen";
-import MultiSelectScreen from "./screens/MultiSelectScreen"
+import MultiSelectScreen from "./screens/MultiSelectScreen";
+import PainMapScreen from "./screens/PainMapScreen";
+import { AppSettingsScreen, ProfileSettingsScreen } from "./screens/SettingsScreen";
+import ExportScreen from "./screens/ExportScreen";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouse, faCalendarDays, faChartColumn, faCircleUser, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +25,18 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function NavBar() {
+  const ProfileStackNav = createStackNavigator();
+
+  function ProfileStack() {
+    return (
+      <ProfileStackNav.Navigator screenOptions={{ headerShown: false }}>
+        <ProfileStackNav.Screen name="ProfileHome" component={ProfileScreen} />
+        <ProfileStackNav.Screen name="AppSettings" component={AppSettingsScreen} />
+        <ProfileStackNav.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
+        <ProfileStackNav.Screen name="Export" component={ExportScreen} />
+      </ProfileStackNav.Navigator>
+    );
+  }
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -63,7 +78,7 @@ function NavBar() {
         ), tabBarIcon: () => null}}
       />
       <Tab.Screen name="Charts" component={ChartsScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }
@@ -78,6 +93,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Calendar" component={CalendarScreen} />
         <Stack.Screen name="QuickLog" component={QuickLogScreen} />
         <Stack.Screen name="MultiSelect" component={MultiSelectScreen} />
+        <Stack.Screen name="PainMap" component={PainMapScreen} />
         <Stack.Screen name="Main" component={NavBar} />
       </Stack.Navigator>
     </NavigationContainer>
