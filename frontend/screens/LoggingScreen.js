@@ -15,6 +15,7 @@ export default function LoggingScreen({ navigation, route }) {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [selectedTriggers, setSelectedTriggers] = useState([]);
   const [selectedMedications, setSelectedMedications] = useState([]);
+  const [painLevel, setPainLevel] = useState(0);
 
   const pad = (n) => n.toString().padStart(2, "0");
 
@@ -37,6 +38,7 @@ export default function LoggingScreen({ navigation, route }) {
             symptom_option_ids: selectedSymptoms,
             trigger_option_ids: selectedTriggers,
             medication_option_ids: selectedMedications,
+            pain_level: painLevel,
           }),
         }
       );
@@ -114,7 +116,10 @@ export default function LoggingScreen({ navigation, route }) {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("PainMap")
+            navigation.navigate("PainMap", {
+              initialSelected: painLevel,
+              onSave: setPainLevel,
+            })
           }
           style={styles.selectorButton}
         >
