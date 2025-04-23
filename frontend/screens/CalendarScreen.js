@@ -1,44 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Calendar } from "react-native-calendars";
 import tw from "tailwind-react-native-classnames";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const BASE_URL = "http://localhost:8000";
+
+// For Android emulator, use this instead:
+// const BASE_URL = "http://10.0.2.2:8000";
+
+const painDescriptions = [
+  "No pain",
+  "Minor, occasional discomfort",
+  "Slight discomfort",
+  "Noticeable but manageable",
+  "Distracting",
+  "Hard to ignore",
+  "Constant but functional",
+  "Sleep-disrupting",
+  "Severe with nausea",
+  "Extremely severe",
+  "Unconscious"
+];
 
 export default function CalendarScreen({ navigation }) {
-	const [selectedDate, setSelectedDate] = useState(null);
+  const now = new Date();
 
-  // dummy data: keys are date strings, values are arrays of logs
-  const dummyLogs = {
-    "2025-04-11": [
-      { id: "log1", title: "Migraine Log: 6:28 AM - Severe" },
-      { id: "log2", title: "Migraine Log: 7:15 AM - Moderate" },
-    ],
-    "2025-04-15": [
-      { id: "log3", title: "Migraine Log: 9:00 AM - Mild" },
-    ],
-  };
-
-  // dates that will be dotted, revised when api call added
-  const markedDates = {};
-  const logDates = Object.keys(dummyLogs);
-	
-	logDates.forEach(date => {
-    markedDates[date] = { marked: true, dotColor: "#8191FF" };
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [logsByDate, setLogsByDate] = useState({});
+  const [markedDates, setMarkedDates] = useState({});
+  const [currentMonth, setCurrentMonth] = useState({
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
   });
 
-  // selects a date when pressed, day is something in third party library from onDayPress
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        const { year, month } = currentMonth;
+
+        const res = await fetch(`${BASE_URL}/migraines/month?year=${year}&month=${month}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        const logs = {};
+        const marks = {};
+
+        data.forEach(log => {
+          const dateStr = log.start_time.split("T")[0];
+
+          if (!logs[dateStr]) {
+            logs[dateStr] = [];
+          }
+          logs[dateStr].push(log);
+
+          marks[dateStr] = { marked: true, dotColor: "#8191FF" };
+        });
+
+        setLogsByDate(logs);
+        setMarkedDates(marks);
+      } catch (err) {
+        console.error("Failed to fetch logs", err);
+      }
+    };
+
+    fetchLogs();
+  }, [currentMonth]);
+
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
 
-  // nav to logging screen with log data
+  const handleMonthChange = (monthData) => {  
+    setCurrentMonth({ year: monthData.year, month: monthData.month });
+  };
+
   const handleLogPress = (log) => {
-    navigation.navigate("Logging", { log });
+    navigation.navigate("Logging", { logId: log.id }); // handle later
   };
 
   return (
     <View style={[styles.container, tw`flex-1`]}>
       <Text style={tw`text-white text-2xl font-bold mt-14 ml-5`}>Calendar</Text>
-      
+
       <Calendar
         style={styles.calendar}
         markedDates={{
@@ -46,6 +95,7 @@ export default function CalendarScreen({ navigation }) {
           ...(selectedDate ? { [selectedDate]: { selected: true, selectedColor: "#8191FF" } } : {}),
         }}
         onDayPress={handleDayPress}
+        onMonthChange={handleMonthChange}
         theme={{
           calendarBackground: "#39345B",
           backgroundColor: "#FFFFFF",
@@ -57,19 +107,20 @@ export default function CalendarScreen({ navigation }) {
         }}
       />
 
-      {/* conditionally render logs for selected date */}
-      {selectedDate && dummyLogs[selectedDate] && (
+      {selectedDate && logsByDate[selectedDate] && (
         <View style={[styles.card, tw`mx-5 mt-5 p-5`]}>
           <Text style={tw`text-white text-lg font-bold mb-4`}>
             Logs for {selectedDate}
           </Text>
-          {dummyLogs[selectedDate].map((log) => (
+          {logsByDate[selectedDate].map((log) => (
             <TouchableOpacity
               key={log.id} // unique key for each log or else react will throw a warning
               onPress={() => handleLogPress(log)}
               style={tw`border-b border-gray-200 py-3`}
             >
-              <Text style={tw`text-white text-base`}>{log.title}</Text>
+              <Text style={tw`text-white text-base`}>
+                {new Date(log.start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} — {painDescriptions[log.pain_level] ?? "Unknown pain"}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -83,7 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#39345B",
   },
   calendar: {
-		marginTop: 10,
+    marginTop: 10,
     marginHorizontal: 20,
     borderRadius: 12,
   },
