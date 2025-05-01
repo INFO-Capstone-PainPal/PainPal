@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
+const BASE_URL = "http://localhost:8000";
+
+// For Android emulator, use this instead:
+// const BASE_URL = "http://10.0.2.2:8000";
 
 export default function ProfileScreen({ navigation, route }) {
 
@@ -11,6 +18,33 @@ export default function ProfileScreen({ navigation, route }) {
     "App Settings": "AppSettings",
     "Export Logs": "Export",
     "Logout": "Login"
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+
+      const res = await fetch(`${BASE_URL}/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.detail || "Logout failed");
+      }
+
+      await AsyncStorage.removeItem("access_token");
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    } catch (e) {
+      console.error("Logout error", e);
+    }
   };
 
   return (
@@ -28,9 +62,7 @@ export default function ProfileScreen({ navigation, route }) {
 
           const handlePress = () => {
             if (isLogoutButton) {
-              // logout stuff goes here
-              {/* console.log("Logging out..."); */}
-              navigation.navigate("Login");
+              handleLogout();
             } else {
               navigation.navigate(screenMap[label]);
             }
