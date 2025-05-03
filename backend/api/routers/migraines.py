@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from typing import Optional
 from sqlalchemy.orm import Session
 
 from api.crud import migraine as crud_migraine
@@ -67,3 +68,11 @@ def read_migraine(
     if db_migraine is None:
         raise HTTPException(status_code=404, detail="Migraine log not found")
     return db_migraine
+
+# Chcek if there is an unfinished log that user needs to complete
+@router.get("/migraines/unfinished", response_model=Optional[Migraine])
+def check_unfinished_migraine(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    return crud_migraine.get_unfinished_migraine(db, user_id=current_user.id)
