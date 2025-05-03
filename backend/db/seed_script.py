@@ -59,5 +59,5 @@ if __name__ == "__main__":
     db = SessionLocal()
     try:
         seed_symptoms_and_triggers(db)
-    finally:
+    finally:    
         db.close()
