@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 
-from api.schemas.symptom import SymptomOption
-from api.schemas.trigger import TriggerOption
-from api.schemas.medication import MedicationOption
+from db.models.symptom import SymptomOption
+from db.models.trigger import TriggerOption
+from db.models.medication import MedicationOption
 from db.models.migraine import Migraine
 from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate
 
@@ -55,12 +55,18 @@ def complete_migraine_log(db: Session, user_id: int, migraine_id: int, update_da
     if not migraine:
         return None
 
-    for field, value in update_data.model_dump(exclude_unset=True).items():
-        if field == "symptom_option_ids":
-            migraine.symptoms = db.query(SymptomOption).filter(SymptomOption.id.in_(value)).all()
-        elif field == "trigger_option_ids":
-            migraine.triggers = db.query(TriggerOption).filter(TriggerOption.id.in_(value)).all()
-        else:
+    if update_data.symptoms is not None:
+        migraine.symptoms = db.query(SymptomOption).filter(SymptomOption.id.in_(update_data.symptoms)).all()
+
+    if update_data.triggers is not None:
+        migraine.triggers = db.query(TriggerOption).filter(TriggerOption.id.in_(update_data.triggers)).all()
+
+    if update_data.medications is not None:
+        migraine.medications = db.query(MedicationOption).filter(MedicationOption.id.in_(update_data.medications)).all()
+
+    # For all other fields that are scalar (e.g. int, str, datetime), use setattr safely:
+    for field, value in update_data.model_dump(exclude={"symptoms", "triggers", "medications"}).items():
+        if value is not None:
             setattr(migraine, field, value)
 
     db.commit()
