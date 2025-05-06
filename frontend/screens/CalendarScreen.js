@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { Calendar } from "react-native-calendars";
 import tw from "tailwind-react-native-classnames";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -25,6 +25,8 @@ const painDescriptions = [
 
 export default function CalendarScreen({ navigation }) {
   const now = new Date();
+
+  const [loading, setLoading] = useState(true);
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [logsByDate, setLogsByDate] = useState({});
@@ -66,22 +68,36 @@ export default function CalendarScreen({ navigation }) {
         setMarkedDates(marks);
       } catch (err) {
         console.error("Failed to fetch logs", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchLogs();
   }, [currentMonth]);
 
+  if (loading) {
+    return (
+      <View style={[styles.container, tw`flex-1`]}>
+        <Text style={tw`text-white text-2xl font-bold mt-14 ml-5`}>Calendar</Text>
+        <View style={[tw`flex-1 justify-center items-center`]}>
+          <ActivityIndicator size="large" color="#FFFFFF" />
+        </View>
+      </View>
+    );
+  }
+  
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
 
   const handleMonthChange = (monthData) => {  
+    setLoading(true);
     setCurrentMonth({ year: monthData.year, month: monthData.month });
   };
 
   const handleLogPress = (log) => {
-    navigation.navigate("Logging", { logId: log.id }); // handle later
+    navigation.navigate("MigraineDetail", { logId: log.id });
   };
 
   return (
@@ -89,6 +105,7 @@ export default function CalendarScreen({ navigation }) {
       <Text style={tw`text-white text-2xl font-bold mt-14 ml-5`}>Calendar</Text>
 
       <Calendar
+        current={`${currentMonth.year}-${String(currentMonth.month).padStart(2, '0')}-01`}
         style={styles.calendar}
         markedDates={{
           ...markedDates,
@@ -108,7 +125,7 @@ export default function CalendarScreen({ navigation }) {
       />
 
       {selectedDate && logsByDate[selectedDate] && (
-        <View style={[styles.card, tw`mx-5 mt-5 p-5`]}>
+        <ScrollView style={[styles.card, tw`mx-5 mt-5 p-5 mb-10`]}>
           <Text style={tw`text-white text-lg font-bold mb-4`}>
             Logs for {selectedDate}
           </Text>
@@ -123,7 +140,7 @@ export default function CalendarScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       )}
     </View>
   );

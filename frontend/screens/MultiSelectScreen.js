@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 export default function MultiSelectScreen({ route, navigation }) {
@@ -21,8 +21,8 @@ export default function MultiSelectScreen({ route, navigation }) {
     <View style={[styles.container, tw`flex-1`]}>
       <Text style={tw`text-white text-2xl font-bold mt-14 ml-5`}>{title}</Text>
 
-      <View style={[styles.card, tw`mx-5 mt-5 px-5`]}>
-        {options.map((item, index) => {
+      <ScrollView style={[styles.card, tw`mx-5 mt-5 px-5`]} contentContainerStyle={{ paddingBottom: 20 }}>
+      {options.map((item, index) => {
           const isSelected = selected.includes(item.id);
           return (
             <TouchableOpacity
@@ -40,9 +40,9 @@ export default function MultiSelectScreen({ route, navigation }) {
             </TouchableOpacity>
           );
         })}
-      </View>
+      </ScrollView>
       <TouchableOpacity
-        style={[styles.saveButton, tw`mx-5 mt-6`]}
+        style={[styles.saveButton, tw`mx-5 mt-6 mb-12`]}
         onPress={() => {
           onSave(selected);
           navigation.goBack();

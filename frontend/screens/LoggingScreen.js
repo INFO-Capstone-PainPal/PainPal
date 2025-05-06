@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import TimePickerComponent from "../components/TimePickerComponent";
@@ -17,7 +17,33 @@ export default function LoggingScreen({ navigation, route }) {
   const [selectedMedications, setSelectedMedications] = useState([]);
   const [painLevel, setPainLevel] = useState(0);
 
+  const [symptomOptions, setSymptomOptions] = useState([]);
+  const [triggerOptions, setTriggerOptions] = useState([]);
+  const [medicationOptions, setMedicationOptions] = useState([]);
+
+
   const pad = (n) => n.toString().padStart(2, "0");
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        const res = await fetch(`${BASE_URL}/options/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+
+        setSymptomOptions(data.symptoms.map((item) => ({ id: item.id, label: item.name })));
+        setTriggerOptions(data.triggers.map((item) => ({ id: item.id, label: item.name })));
+        setMedicationOptions(data.medications.map((item) => ({ id: item.id, label: item.name })));
+      } catch (err) {
+        console.error("Failed to fetch options", err);
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   const handleSave = async () => {
     try {
@@ -35,9 +61,9 @@ export default function LoggingScreen({ navigation, route }) {
           },
           body: JSON.stringify({
             end_time: localTimeString,
-            symptom_option_ids: selectedSymptoms,
-            trigger_option_ids: selectedTriggers,
-            medication_option_ids: selectedMedications,
+            symptoms: selectedSymptoms,
+            triggers: selectedTriggers,
+            medications: selectedMedications,
             pain_level: painLevel,
           }),
         }
@@ -61,6 +87,7 @@ export default function LoggingScreen({ navigation, route }) {
       <View style={[styles.card, tw`mx-5 mt-5 p-5`]}>
         <TimePickerComponent
           title="End Time"
+          initialDateTime={endDateTime}
           onDateTimeChange={setEndDateTime}
         />
       </View>
@@ -70,7 +97,7 @@ export default function LoggingScreen({ navigation, route }) {
           onPress={() =>
             navigation.navigate("MultiSelect", {
               title: "Symptoms",
-              options: symptomsOptions,
+              options: symptomOptions,
               initialSelected: selectedSymptoms,
               onSave: setSelectedSymptoms,
             })
@@ -86,7 +113,7 @@ export default function LoggingScreen({ navigation, route }) {
           onPress={() =>
             navigation.navigate("MultiSelect", {
               title: "Triggers",
-              options: triggersOptions,
+              options: triggerOptions,
               initialSelected: selectedTriggers,
               onSave: setSelectedTriggers,
             })
@@ -102,7 +129,7 @@ export default function LoggingScreen({ navigation, route }) {
           onPress={() =>
             navigation.navigate("MultiSelect", {
               title: "Medications",
-              options: medicationsOptions,
+              options: medicationOptions,
               initialSelected: selectedMedications,
               onSave: setSelectedMedications,
             })
@@ -139,22 +166,6 @@ export default function LoggingScreen({ navigation, route }) {
     </View>
   );
 }
-
-const symptomsOptions = [
-  { id: 1, label: "Nausea" },
-  { id: 2, label: "Aura" },
-  { id: 3, label: "Light Sensitivity" },
-];
-const triggersOptions = [
-  { id: 1, label: "Stress" },
-  { id: 2, label: "Lack of Sleep" },
-  { id: 3, label: "Weather Change" },
-];
-const medicationsOptions = [
-  { id: 1, label: "Ibuprofen" },
-  { id: 2, label: "Sumatriptan" },
-  { id: 3, label: "Naproxen" },
-];
 
 const styles = StyleSheet.create({
   container: {
