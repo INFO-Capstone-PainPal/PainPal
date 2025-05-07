@@ -6,7 +6,7 @@ from api.schemas.auth import User, UserCreate, UserUpdate
 from db.db_setup import get_db
 from utils.utils import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(prefix="/users")
 
 @router.post("/", response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):

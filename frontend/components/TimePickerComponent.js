@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Picker } from "react-native-wheel-pick";
 import tw from "tailwind-react-native-classnames";
 
-const TimePickerComponent = ({ title, onDateTimeChange }) => {
+const TimePickerComponent = ({ title, onDateTimeChange, initialDateTime }) => {
   const hours = [];
   for (let i = 1; i <= 12; i++) {
     const hour = i < 10 ? `0${i}` : `${i}`;
@@ -18,9 +18,23 @@ const TimePickerComponent = ({ title, onDateTimeChange }) => {
 
   const periods = ["AM", "PM"];
 
-  const [selectedHour, setSelectedHour] = useState(hours[0]);
-  const [selectedMinute, setSelectedMinute] = useState(minutes[0]);
-  const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
+  // set vals from initialDateTime or fallback to 12:00 AM
+  let hour24 = 0;
+  let minute = 0;
+  
+  if (initialDateTime) {
+    hour24 = initialDateTime.getHours();
+    minute = initialDateTime.getMinutes();
+  }  
+
+  let hour12 = hour24 % 12;
+  if (hour12 === 0) {
+    hour12 = 12;
+  }
+
+  const [selectedHour, setSelectedHour] = useState(hour12.toString().padStart(2, "0"));
+  const [selectedMinute, setSelectedMinute] = useState(minute.toString().padStart(2, "0"));
+  const [selectedPeriod, setSelectedPeriod] = useState(hour24 >= 12 ? "PM" : "AM");
 
   const getSelectedDateTime = () => {
     const hour12 = parseInt(selectedHour, 10);
@@ -46,8 +60,8 @@ const TimePickerComponent = ({ title, onDateTimeChange }) => {
   }, [selectedHour, selectedMinute, selectedPeriod]);
 
   return (
-    <View>
-      <Text style={tw`text-white text-lg font-bold`}>{title}</Text>
+    <View style={styles.card}>
+      <Text style={tw`text-white text-lg font-bold mb-2`}>{title}</Text>
       <View style={tw`flex-row justify-around items-center`}>
         <Picker
           style={styles.pickerStyle}
@@ -80,10 +94,14 @@ const TimePickerComponent = ({ title, onDateTimeChange }) => {
 };
 
 const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "#4D4471",
+    borderRadius: 12,
+  },
   pickerStyle: {
     height: 215,
     width: 100,
-    backgroundColor: "#4D4471",
+    backgroundColor: "transparent",
   },
 });
 

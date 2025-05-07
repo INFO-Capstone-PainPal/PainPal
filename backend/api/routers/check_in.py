@@ -6,7 +6,7 @@ from db.models.user import User
 from api.schemas.check_in import CheckInCreate, CheckIn
 from api.crud import check_in as crud_checkin
 
-router = APIRouter()
+router = APIRouter(prefix="/check-in")
 
 @router.post("/", response_model=CheckIn)
 def submit_checkin(data: CheckInCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):

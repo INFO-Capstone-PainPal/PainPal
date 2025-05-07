@@ -5,7 +5,8 @@ import Svg, {Path} from 'react-native-svg';
 import Slider from '@react-native-community/slider';
 
 export default function LoggingScreen({navigation, route}) {
-    const [painLevel, setPainLevel] = React.useState(0);
+    const { initialSelected = 0, onSave } = route.params;
+    const [painLevel, setPainLevel] = React.useState(initialSelected);
     const painDescriptions = [
         "0 - No pain",
         "1 - Minor, occasional discomfort",
@@ -79,6 +80,7 @@ export default function LoggingScreen({navigation, route}) {
                 <TouchableOpacity 
                     style={styles.nextButton} 
                     onPress={() => { 
+                        onSave(painLevel);
                         navigation.goBack();
                     }
                 }>

@@ -84,6 +84,7 @@ export default function QuickLogScreen({ navigation }) {
       <View style={[styles.card, tw`mx-5 mt-5 p-5`]}>
         <TimePickerComponent
           title="Start Time"
+          initialDateTime={startDateTime}
           onDateTimeChange={setStartDateTime}
         />
       </View>

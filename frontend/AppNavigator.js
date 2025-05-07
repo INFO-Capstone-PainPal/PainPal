@@ -14,6 +14,7 @@ import MultiSelectScreen from "./screens/MultiSelectScreen";
 import PainMapScreen from "./screens/PainMapScreen";
 import { AppSettingsScreen, ProfileSettingsScreen } from "./screens/SettingsScreen";
 import ExportScreen from "./screens/ExportScreen";
+import MigraineDetailScreen from "./screens/MigraineDetailScreen";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouse, faCalendarDays, faChartColumn, faCircleUser, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -94,6 +95,7 @@ export default function AppNavigator() {
         <Stack.Screen name="QuickLog" component={QuickLogScreen} />
         <Stack.Screen name="MultiSelect" component={MultiSelectScreen} />
         <Stack.Screen name="PainMap" component={PainMapScreen} />
+        <Stack.Screen name="MigraineDetail" component={MigraineDetailScreen} />
         <Stack.Screen name="Main" component={NavBar} />
       </Stack.Navigator>
     </NavigationContainer>
