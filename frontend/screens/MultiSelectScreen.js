@@ -41,17 +41,27 @@ export default function MultiSelectScreen({ route, navigation }) {
           );
         })}
       </ScrollView>
-      <TouchableOpacity
-        style={[styles.saveButton, tw`mx-5 mt-6 mb-12`]}
-        onPress={() => {
-          onSave(selected);
-          navigation.goBack();
-        }}
-      >
-        <Text style={tw`text-white text-center font-bold text-lg`}>
-          Save {title}
-        </Text>
-      </TouchableOpacity>
+      <View style={tw`flex-row justify-between mx-5 mt-6 mb-12`}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={tw`text-white text-center font-bold text-lg`}>
+            Cancel
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => {
+            onSave(selected);
+            navigation.goBack();
+          }}
+        >
+          <Text style={tw`text-white text-center font-bold text-lg`}>
+            Save
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -68,5 +78,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#8191FF",
     borderRadius: 8,
     paddingVertical: 12,
+    paddingHorizontal: 6,
   },
 });

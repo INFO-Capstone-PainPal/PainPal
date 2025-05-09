@@ -188,6 +188,11 @@ export default function MigraineDetailScreen({ route, navigation }) {
         </TouchableOpacity>
   
         <View style={tw`flex-row justify-between items-center mt-6`}>
+          <TouchableOpacity style={styles.saveButton} onPress={() => navigation.goBack()}>
+            <Text style={tw`text-white text-center font-bold text-lg`}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <Text style={tw`text-white text-center font-bold text-lg`}>
               Save Log
