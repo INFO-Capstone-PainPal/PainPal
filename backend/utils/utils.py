@@ -1,13 +1,13 @@
-from passlib.context import CryptContext
-from datetime import datetime, timedelta, timezone
-from jose import JWTError, jwt
-from typing import Optional
 import os
 import redis
-from redis.exceptions import ConnectionError
+from passlib.context import CryptContext
+from datetime import datetime, timedelta, timezone, time
+from jose import JWTError, jwt
+from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+
 from api.crud import auth
 from api.schemas.auth import UserInDB
 from api.schemas.token import TokenData
@@ -80,3 +80,16 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
 
 async def get_current_active_user(current_user: UserInDB = Depends(get_current_user)):
     return current_user
+
+
+# sleep calculation
+def calculate_sleep_hours(bed_time: time, wake_time: time) -> float:
+    today = datetime.today()
+    bed_dt = datetime.combine(today, bed_time)
+    wake_dt = datetime.combine(today, wake_time)
+
+    if wake_dt <= bed_dt:
+        wake_dt += timedelta(days=1)
+
+    duration = wake_dt - bed_dt
+    return round(duration.total_seconds() / 3600, 2)

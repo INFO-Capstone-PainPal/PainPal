@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, Date, UniqueConstraint
+from sqlalchemy import Column, Integer, ForeignKey, Date, UniqueConstraint, Float
 from sqlalchemy.orm import relationship
 from datetime import date
 
@@ -15,6 +15,9 @@ class CheckIn(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     checkin_date = Column(Date, nullable=False, default=date.today)
     had_migraine = Column(Integer, nullable=False)  # 0 = no, 1 = yes
+    time_went_to_bed = Column(Integer, nullable=False)
+    time_woke_up = Column(Integer, nullable=False)
+    total_sleep_hours = Column(Float, nullable=True) # this is calculated
 
     medications = relationship("MedicationOption", secondary=checkin_medications, backref="checkins")
     user = relationship("User", back_populates="checkins")
