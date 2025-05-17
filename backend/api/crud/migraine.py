@@ -72,3 +72,14 @@ def complete_migraine_log(db: Session, user_id: int, migraine_id: int, update_da
     db.commit()
     db.refresh(migraine)
     return migraine
+
+def get_unfinished_migraine(db: Session, user_id: int):
+    return (
+        db.query(Migraine)
+        .filter(
+            Migraine.user_id == user_id,
+            Migraine.end_time == None
+        )
+        .order_by(Migraine.start_time.desc())
+        .first()
+    )
