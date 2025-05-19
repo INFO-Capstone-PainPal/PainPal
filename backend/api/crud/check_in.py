@@ -46,7 +46,7 @@ def create_checkin_with_streak(db: Session, user: User, checkin_data: CheckInCre
         time_went_to_bed=checkin_data.time_went_to_bed,
         time_woke_up=checkin_data.time_woke_up,
         total_sleep_hours=sleep_hours,
-        weather=checkin_data.weather
+        weather=checkin_data.weather.model_dump() if checkin_data.weather else None
     )
 
     db.add(checkin)

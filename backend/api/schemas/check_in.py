@@ -24,7 +24,7 @@ class CheckIn(BaseModel):
     medications: Optional[List[int]]
     time_went_to_bed: time
     time_woke_up: time
-    total_sleep_time: Optional[float]
+    total_sleep_hours: Optional[float]
     weather: Optional[WeatherData] = None
 
     class Config:
