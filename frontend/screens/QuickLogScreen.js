@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import TimePickerComponent from "../components/TimePickerComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { OPENWEATHER_API_KEY } from '@env';
 
 const BASE_URL = "http://localhost:8000";
 
@@ -16,6 +17,12 @@ export default function QuickLogScreen({ navigation }) {
 
   const handleNext = async () => {
     try {
+      const locationString = await AsyncStorage.getItem("user_location");
+      const location = locationString ? JSON.parse(locationString) : null;
+      const { latitude, longitude } = location.coords;
+
+      const weather = await fetchWeatherData(latitude, longitude, startDateTime);
+
       // Format the date and time to match the expected format, not UTC time
       const localTimeString =
         `${startDateTime.getFullYear()}-${pad(startDateTime.getMonth() + 1)}-${pad(startDateTime.getDate())}` +
@@ -31,6 +38,7 @@ export default function QuickLogScreen({ navigation }) {
         },
         body: JSON.stringify({
           start_time: localTimeString,
+          weather: weather
         }), 
       });
       const data = await res.json();
@@ -46,8 +54,42 @@ export default function QuickLogScreen({ navigation }) {
     }
   };
 
+  const fetchWeatherData = async (lat, lon, date) => {
+    try {
+        const unix_time = Math.floor(date.getTime() / 1000);
+  
+        const weatherRes = await fetch(
+          `https://history.openweathermap.org/data/2.5/history/city?lat=${lat}&lon=${lon}&type=hour&appid=${OPENWEATHER_API_KEY}&start_time=${unix_time}&cnt=1&units=imperial`
+        );
+        
+        const weatherData = await weatherRes.json();
+        
+        if (!weatherRes.ok) {
+          throw new Error(weatherData || "Could not fetch weather data");
+        } else {
+          return {
+          temp: weatherData.list[0].main.temp,
+          humidity: weatherData.list[0].main.humidity,
+          description: weatherData.list[0].weather[0].description,
+          pressure: weatherData.list[0].main.pressure,
+          latitude: lat,
+          longitude: lon
+          }
+        } 
+    } catch (error) {
+      console.error("Weather fetch error:", error);
+      return null;
+    }
+  };
+
   const handleSaveForLater = async () => {
     try {
+      const locationString = await AsyncStorage.getItem("user_location");
+      const location = locationString ? JSON.parse(locationString) : null;
+      const { latitude, longitude } = location.coords;
+
+      const weather = await fetchWeatherData(latitude, longitude, startDateTime);
+
       // Format the date and time to match the expected format, not UTC time
       const localTimeString =
         `${startDateTime.getFullYear()}-${pad(startDateTime.getMonth() + 1)}-${pad(startDateTime.getDate())}` +
@@ -63,6 +105,7 @@ export default function QuickLogScreen({ navigation }) {
         },
         body: JSON.stringify({
           start_time: localTimeString,
+          weather: weather
         }), 
       });
       const data = await res.json();
