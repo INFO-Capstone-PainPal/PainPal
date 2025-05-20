@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Image, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Image, Text, StyleSheet, TouchableOpacity} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import * as Location from 'expo-location';
 import { SvgUri } from 'react-native-svg';
 import { GOOGLE_API_KEY } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const BASE_URL = "http://localhost:8000";
 
-export default function HomeScreen() {
-  const [progress, setProgress] = useState("0%");
+export default function HomeScreen({ navigation }) {
+  const [currentStep, setCurrentStep] = useState(0);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
-  let name = "djeck"; // Placeholder
+  const [name, setName] = useState("user");
+  const [logStatus, setLogStatus] = useState(null);
+  const [unfinishedId, setUnfinishedId] = useState(null);
+
+  // fetches log status when home page is focused
+  useEffect(() => {
+    const refresh = navigation.addListener("focus", () => {
+      fetchLogStatus();
+    });
+  
+    return refresh;
+  }, [navigation]);
 
   // location permission and data
   useEffect(() => {
@@ -24,6 +37,10 @@ export default function HomeScreen() {
 
       let loc = await Location.getCurrentPositionAsync({});
       setLocation(loc);
+      // set location and name upon page load
+      await AsyncStorage.setItem("user_location", JSON.stringify(loc));
+      fetchName();
+      // insert steak endpoint fetch here to set current step
     })();
   }, []);
 
@@ -33,6 +50,31 @@ export default function HomeScreen() {
       weatherApiAsync();
     }
   }, [location]);
+
+  // fetch user's name
+  const fetchName = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+
+      const response = await fetch(`${BASE_URL}/users/me/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user profile");
+      }
+
+      const data = await response.json();
+      setName(data.full_name);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   // Fetch weather
   const weatherApiAsync = async () => {
@@ -54,22 +96,100 @@ export default function HomeScreen() {
     }
   };
 
+  // fetch whether there is a migraine log that needs to be finished
+  const fetchLogStatus = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+
+      const response = await fetch(`${BASE_URL}/migraines/migraines/unfinished`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch log status");
+      }
+
+      const data = await response.json();
+      if (data?.end_time === null) {
+        setLogStatus(data);
+        setUnfinishedId(data.id);
+      }
+    } catch (error) {
+      console.error("Error fetching log data:", error);
+    }
+  };
+
+  const handleLogPress = () => {
+    navigation.navigate("MigraineDetail", { logId: unfinishedId });
+  };
+
+  const handleCheckInPress = () => {
+    navigation.navigate("CheckIn", { logId: unfinishedId });
+  };
+  
   return (
     <ScrollView contentContainerStyle={[styles.container, tw`justify-center px-6`, { flexGrow: 1 }]} style={{ backgroundColor: "#39345B" }}>
       <Text style={[tw`font-bold`, styles.header]}>
         Hello, {name}!
       </Text>
 
-      <View style={tw`mb-6 flex-row items-center justify-around`}>
-        <Image source={require("../assets/PainPal_Logo.png")} style={styles.logo} />
-        <Text style={[tw`font-bold`, styles.msg]}>
-          Fill out your first log today!
-        </Text>
+      <View style={[tw`mb-6 flex-row`, { alignItems: 'center' }]}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Image source={require("../assets/PainPal_Logo.png")} style={styles.logo} />
+        </View>
+
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          <Text style={styles.msg}>
+            Logging daily will allow you access to AI-driven insights and predictions. Don't forget to fill out your daily log!
+          </Text>
+
+          <TouchableOpacity onPress={handleCheckInPress} style={styles.checkInButton}>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>Continue</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <View style={styles.progressBarBackground}>
-        <View style={[styles.progressBarFill, { width: progress }]} />
+      <View style={tw`flex-row justify-between items-center mt-4`}>
+        {[1, 2, 3, 4, 5, 6, 7].map((step, index) => {
+          const isActive = step <= currentStep;
+          return (
+            <View key={step} style={tw`flex-row items-center`}>
+              <View style={[tw`w-8 h-8 rounded-full items-center justify-center`, {
+                backgroundColor: isActive ? '#827BB9' : 'transparent',
+                borderColor: '#827BB9',
+                borderWidth: 2,
+              }]}>
+                <Text style={{ color: isActive ? 'white' : '#827BB9', fontWeight: 'bold' }}>{step}</Text>
+              </View>
+              {index !== 6 && (
+                <View style={{ height: 2, width: 26, backgroundColor: '#827BB9' }} />
+              )}
+            </View>
+          )
+        })}
       </View>
+
+      {logStatus && (
+        <View style={styles.popup}>
+          <Text style={{ color: 'white', fontWeight: '600', fontSize: 16, marginBottom: 8 }}>
+            Hey!
+          </Text>
+          <Text style={{ color: 'white', marginBottom: 12 }}>
+            You have an unfinished log. Complete it and keep your migraine tracking up-to-date!
+          </Text>
+          <TouchableOpacity
+            onPress={handleLogPress}
+            style={styles.popupButton}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>Continue</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <ScrollView horizontal style={tw`mt-10`} showsHorizontalScrollIndicator={false}>
         {weatherData?.forecastHours?.slice(0, 10).map((hour, index) => {
@@ -114,14 +234,13 @@ const styles = StyleSheet.create({
     fontFamily: 'FunnelSansBold',
     color: 'white',
     fontSize: 16,
-    width: 120,
-    fontWeight: '500'
+    fontWeight: '500',
+    textAlign: "center",
   },
   logo: {
     width: 150,
     height: 150,
     borderRadius: 180,
-    marginTop: 30
   },
   progressBarBackground: {
     height: 8,
@@ -170,4 +289,26 @@ const styles = StyleSheet.create({
   fontWeight: 'bold',
   fontSize: 24
   },
+  checkInButton: {
+    alignSelf: 'center',
+    marginTop: 12,
+    backgroundColor: '#675FA6',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 12
+  },
+  popup: {
+    backgroundColor: '#4B3F72',
+    padding: 16,
+    borderRadius: 16,
+    marginTop: 24
+  },
+  popupButton: {
+    alignSelf: 'flex-end',
+    marginTop: 12,
+    backgroundColor: '#675FA6',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 12,
+  }
 });

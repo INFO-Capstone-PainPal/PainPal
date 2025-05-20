@@ -98,7 +98,12 @@ export default function MigraineDetailScreen({ route, navigation }) {
           medications: selectedMeds,
         }),
       });
-      navigation.goBack();
+      // needed to refresh the home page to see if migraine log is finished
+      if (route.params?.fromCalendar) {
+        navigation.goBack();
+      } else {
+        navigation.navigate("Main", { screen: "Home" });
+      }
     } catch (err) {
       console.error('Failed to save migraine', err);
     }

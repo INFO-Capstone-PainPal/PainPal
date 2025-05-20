@@ -97,7 +97,7 @@ export default function CalendarScreen({ navigation }) {
   };
 
   const handleLogPress = (log) => {
-    navigation.navigate("MigraineDetail", { logId: log.id });
+    navigation.navigate("MigraineDetail", { logId: log.id, fromCalendar: true });
   };
 
   return (

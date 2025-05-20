@@ -8,9 +8,7 @@ export default function ProfileScreen({ navigation, route }) {
 
   const screenMap = {
     "Profile Settings": "ProfileSettings",
-    "App Settings": "AppSettings",
-    "Export Logs": "Export",
-    "Logout": "Login"
+    "App Settings": "AppSettings"
   };
 
   return (
@@ -22,7 +20,7 @@ export default function ProfileScreen({ navigation, route }) {
         <Image source={require("../assets/PainPal_Logo.png")} style={styles.logo} />
       </View>
       <View style={styles.menuContainer}>
-        {["Profile Settings", "App Settings", "Export Logs", "Logout"].map((label) => {
+        {["Profile Settings", "App Settings", "Logout"].map((label) => {
 
           const isLogoutButton = label === "Logout";
 
