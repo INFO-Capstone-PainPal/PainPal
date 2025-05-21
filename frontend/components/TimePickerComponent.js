@@ -60,7 +60,7 @@ const TimePickerComponent = ({ title, onDateTimeChange, initialDateTime }) => {
   }, [selectedHour, selectedMinute, selectedPeriod]);
 
   return (
-    <View style={styles.card}>
+    <View>
       <Text style={tw`text-white text-lg font-bold mb-2`}>{title}</Text>
       <View style={tw`flex-row justify-around items-center`}>
         <Picker
@@ -69,7 +69,6 @@ const TimePickerComponent = ({ title, onDateTimeChange, initialDateTime }) => {
           selectedValue={selectedHour}
           onValueChange={setSelectedHour}
           textColor="#FFFFFF"
-          itemTextSize={20}
         />
         <Text style={tw`text-white text-xl mx-1`}>:</Text>
         <Picker
@@ -78,7 +77,6 @@ const TimePickerComponent = ({ title, onDateTimeChange, initialDateTime }) => {
           selectedValue={selectedMinute}
           onValueChange={setSelectedMinute}
           textColor="#FFFFFF"
-          itemTextSize={20}
         />
         <Picker
           style={styles.pickerStyle}
@@ -86,7 +84,6 @@ const TimePickerComponent = ({ title, onDateTimeChange, initialDateTime }) => {
           selectedValue={selectedPeriod}
           onValueChange={setSelectedPeriod}
           textColor="#FFFFFF"
-          itemTextSize={20}
         />
       </View>
     </View>
@@ -94,10 +91,6 @@ const TimePickerComponent = ({ title, onDateTimeChange, initialDateTime }) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#4D4471",
-    borderRadius: 12,
-  },
   pickerStyle: {
     height: 215,
     width: 100,
