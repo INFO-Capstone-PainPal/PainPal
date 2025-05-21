@@ -16,6 +16,7 @@ export default function LoggingScreen({ navigation, route }) {
   const [selectedTriggers, setSelectedTriggers] = useState([]);
   const [selectedMedications, setSelectedMedications] = useState([]);
   const [painLevel, setPainLevel] = useState(0);
+  const [painAreas, setPainAreas] = useState([]);
 
   const [symptomOptions, setSymptomOptions] = useState([]);
   const [triggerOptions, setTriggerOptions] = useState([]);
@@ -65,6 +66,7 @@ export default function LoggingScreen({ navigation, route }) {
             triggers: selectedTriggers,
             medications: selectedMedications,
             pain_level: painLevel,
+            pain_map: painAreas,
           }),
         }
       );
@@ -145,12 +147,16 @@ export default function LoggingScreen({ navigation, route }) {
           onPress={() =>
             navigation.navigate("PainMap", {
               initialSelected: painLevel,
-              onSave: setPainLevel,
+              initialAreas: painAreas,
+              onSave: (level, areas) => {
+                setPainLevel(level);
+                setPainAreas(areas);
+              }
             })
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Pain Map
           </Text>
         </TouchableOpacity>
