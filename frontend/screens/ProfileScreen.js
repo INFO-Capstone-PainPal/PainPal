@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const BASE_URL = "http://localhost:8000";
 
 export default function ProfileScreen({ navigation, route }) {
 
@@ -24,11 +27,27 @@ export default function ProfileScreen({ navigation, route }) {
 
           const isLogoutButton = label === "Logout";
 
-          const handlePress = () => {
+          const handlePress = async () => {
             if (isLogoutButton) {
-              // logout stuff goes here
-              {/* console.log("Logging out..."); */}
-              navigation.navigate("Login");
+              try {
+                const token = await AsyncStorage.getItem("access_token");
+                if (token) {
+                  await fetch(`${BASE_URL}/logout"`, {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${token}`
+                    }
+                  });
+                }
+
+                // Clear info from AsyncStorage
+                await AsyncStorage.removeItem("access_token");
+                await AsyncStorage.removeItem("user_location");
+
+                navigation.navigate("Login");
+              } catch (err) {
+                console.error("Logout failed", err);
+              }
             } else {
               navigation.navigate(screenMap[label]);
             }
@@ -72,9 +91,9 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   menuContainer: {
-  marginTop: 20,
-  borderTopWidth: 1,
-  borderColor: '#5A4D88',
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderColor: '#5A4D88',
   },
   menuButton: {
     flexDirection: 'row',

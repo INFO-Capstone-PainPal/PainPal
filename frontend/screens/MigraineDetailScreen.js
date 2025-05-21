@@ -20,6 +20,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
   const [selectedTriggers, setSelectedTriggers] = useState([]);
   const [selectedMeds, setSelectedMeds] = useState([]);
   const [painLevel, setPainLevel] = useState(0);
+  const [painAreas, setPainAreas] = useState([]);
 
   const [symptomOptions, setSymptomOptions] = useState([]);
   const [triggerOptions, setTriggerOptions] = useState([]);
@@ -42,6 +43,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
         setStartDateTime(new Date(data.start_time));
         setEndDateTime(new Date(data.end_time));
         setPainLevel(data.pain_level);
+        setPainAreas(data.pain_map);
         setSelectedSymptoms(extractIds(data.symptoms));
         setSelectedTriggers(extractIds(data.triggers));
         setSelectedMeds(extractIds(data.medications));
@@ -93,6 +95,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
           start_time: formatDateForApi(startDateTime),
           end_time: formatDateForApi(endDateTime),
           pain_level: painLevel,
+          pain_map: painAreas,
           symptoms: selectedSymptoms,
           triggers: selectedTriggers,
           medications: selectedMeds,
@@ -182,12 +185,16 @@ export default function MigraineDetailScreen({ route, navigation }) {
           onPress={() =>
             navigation.navigate("PainMap", {
               initialSelected: painLevel,
-              onSave: setPainLevel,
+              initialAreas: painAreas,
+              onSave: (level, areas) => {
+                setPainLevel(level);
+                setPainAreas(areas);
+              }
             })
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Pain Map
           </Text>
         </TouchableOpacity>
