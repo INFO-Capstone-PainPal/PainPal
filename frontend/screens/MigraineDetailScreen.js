@@ -194,7 +194,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Pain Map
           </Text>
         </TouchableOpacity>
