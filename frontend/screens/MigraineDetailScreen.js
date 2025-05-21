@@ -20,6 +20,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
   const [selectedTriggers, setSelectedTriggers] = useState([]);
   const [selectedMeds, setSelectedMeds] = useState([]);
   const [painLevel, setPainLevel] = useState(0);
+  const [painAreas, setPainAreas] = useState([]);
 
   const [symptomOptions, setSymptomOptions] = useState([]);
   const [triggerOptions, setTriggerOptions] = useState([]);
@@ -42,6 +43,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
         setStartDateTime(new Date(data.start_time));
         setEndDateTime(new Date(data.end_time));
         setPainLevel(data.pain_level);
+        setPainAreas(data.pain_map);
         setSelectedSymptoms(extractIds(data.symptoms));
         setSelectedTriggers(extractIds(data.triggers));
         setSelectedMeds(extractIds(data.medications));
@@ -93,6 +95,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
           start_time: formatDateForApi(startDateTime),
           end_time: formatDateForApi(endDateTime),
           pain_level: painLevel,
+          pain_map: painAreas,
           symptoms: selectedSymptoms,
           triggers: selectedTriggers,
           medications: selectedMeds,
@@ -141,7 +144,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Symptoms ({selectedSymptoms.length})
           </Text>
         </TouchableOpacity>
@@ -157,7 +160,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Triggers ({selectedTriggers.length})
           </Text>
         </TouchableOpacity>
@@ -173,7 +176,7 @@ export default function MigraineDetailScreen({ route, navigation }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Medications ({selectedMeds.length})
           </Text>
         </TouchableOpacity>
@@ -182,7 +185,11 @@ export default function MigraineDetailScreen({ route, navigation }) {
           onPress={() =>
             navigation.navigate("PainMap", {
               initialSelected: painLevel,
-              onSave: setPainLevel,
+              initialAreas: painAreas,
+              onSave: (level, areas) => {
+                setPainLevel(level);
+                setPainAreas(areas);
+              }
             })
           }
           style={styles.selectorButton}
@@ -217,18 +224,20 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#4D4471",
     borderRadius: 12,
-    padding: 16,
+    paddingTop: 16,
+    paddingHorizontal: 16,
   },
   selectorButton: {
     backgroundColor: "#4D4471",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginBottom: 14,
   },
   saveButton: {
     backgroundColor: "#8191FF",
-    borderRadius: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 });
