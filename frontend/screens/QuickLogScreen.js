@@ -77,7 +77,7 @@ export default function QuickLogScreen({ navigation }) {
           }
         } 
     } catch (error) {
-      console.error("Weather fetch error:", error);
+      console.error("Weather fetch error:", error.message);
       return null;
     }
   };

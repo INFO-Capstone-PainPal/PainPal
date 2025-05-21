@@ -104,7 +104,7 @@ export default function LoggingScreen({ navigation, route }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Symptoms ({selectedSymptoms.length})
           </Text>
         </TouchableOpacity>
@@ -120,7 +120,7 @@ export default function LoggingScreen({ navigation, route }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Triggers ({selectedTriggers.length})
           </Text>
         </TouchableOpacity>
@@ -136,7 +136,7 @@ export default function LoggingScreen({ navigation, route }) {
           }
           style={styles.selectorButton}
         >
-          <Text style={tw`text-white`}>
+          <Text style={tw`text-white text-lg font-bold`}>
             Medications ({selectedMedications.length})
           </Text>
         </TouchableOpacity>
@@ -174,17 +174,20 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#4D4471",
     borderRadius: 12,
+    paddingTop: 16,
+    paddingHorizontal: 16,
   },
   selectorButton: {
     backgroundColor: "#4D4471",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginBottom: 14,
   },
   nextButton: {
     backgroundColor: "#8191FF",
-    borderRadius: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 });
