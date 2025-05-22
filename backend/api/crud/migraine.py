@@ -5,7 +5,7 @@ from db.models.symptom import SymptomOption
 from db.models.trigger import TriggerOption
 from db.models.medication import MedicationOption
 from db.models.migraine import Migraine
-from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate
+from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate, WeatherData
 
 def create_migraine_log(db: Session, migraine: MigraineCreate, user_id: int):
     db_migraine = Migraine(**migraine.model_dump(exclude={"symptoms", "triggers", "medications"}), user_id=user_id)
@@ -43,8 +43,8 @@ def get_migraines_for_month(db: Session, user_id: int, year: int, month: int):
         Migraine.start_time < end_date
     ).order_by(Migraine.start_time).all()
 
-def quick_create_migraine(db: Session, user_id: int, start_time: datetime):
-    migraine = Migraine(user_id=user_id, start_time=start_time)
+def quick_create_migraine(db: Session, user_id: int, start_time: datetime, weather: WeatherData):
+    migraine = Migraine(user_id=user_id, start_time=start_time, weather=weather.model_dump())
     db.add(migraine)
     db.commit()
     db.refresh(migraine)

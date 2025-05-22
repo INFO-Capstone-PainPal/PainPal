@@ -17,6 +17,7 @@ class WeatherData(BaseModel):
 # Schema for quick log
 class MigraineQuickCreate(BaseModel):
     start_time: datetime
+    weather: WeatherData
 
 class MigraineCompleteUpdate(BaseModel):
     start_time: Optional[datetime] = None
