@@ -16,6 +16,7 @@ export default function HomeScreen({ navigation }) {
   const [name, setName] = useState("user");
   const [logStatus, setLogStatus] = useState(null);
   const [unfinishedId, setUnfinishedId] = useState(null);
+  const [displayCheckIn, setCheckInStatus] = useState(true);
 
   // fetches log status when home page is focused
   useEffect(() => {
@@ -40,7 +41,8 @@ export default function HomeScreen({ navigation }) {
       // set location and name upon page load
       await AsyncStorage.setItem("user_location", JSON.stringify(loc));
       fetchName();
-      // insert steak endpoint fetch here to set current step
+      fetchStreak();
+      fetchCheckInStatus();
     })();
   }, []);
 
@@ -124,12 +126,63 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  const fetchCheckInStatus = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+
+      const response = await fetch(`${BASE_URL}/check-in/checkin/today`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch check in status");
+      }
+
+      const data = await response.json();
+      if (data?.has_checked_in) {
+        setCheckInStatus(false);
+      }
+    } catch (error) {
+      console.error("Error fetching check in data:", error);
+    }
+  };
+
+  // fetch streak number
+  const fetchStreak = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+
+      const response = await fetch(`${BASE_URL}/check-in/streak`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch streak number");
+      }
+
+      const data = await response.json();
+      setCurrentStep(data);
+    } catch (error) {
+      console.error("Error fetching streak:", error.message);
+    }
+  }
+
   const handleLogPress = () => {
     navigation.navigate("MigraineDetail", { logId: unfinishedId });
   };
 
   const handleCheckInPress = () => {
-    navigation.navigate("CheckIn", { logId: unfinishedId });
+    navigation.navigate("CheckIn", { logId: unfinishedId, onCheckInSaved: () => setCheckInStatus(false)});
   };
   
   return (
@@ -143,15 +196,20 @@ export default function HomeScreen({ navigation }) {
           <Image source={require("../assets/PainPal_Logo.png")} style={styles.logo} />
         </View>
 
-        <View style={{ flex: 1, justifyContent: 'space-between' }}>
-          <Text style={styles.msg}>
-            Logging daily will allow you access to AI-driven insights and predictions. Don't forget to fill out your daily log!
-          </Text>
+        {displayCheckIn ?
+          <View style={{ flex: 1, justifyContent: 'space-between' }}>
+            <Text style={styles.msg}>
+              Logging daily will allow you access to AI-driven insights and predictions. Don't forget to fill out your daily log!
+            </Text>
 
-          <TouchableOpacity onPress={handleCheckInPress} style={styles.checkInButton}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>Continue</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={handleCheckInPress} style={styles.checkInButton}>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>Continue</Text>
+            </TouchableOpacity>
+          </View> :  <View style={{ flex: 1, justifyContent: 'space-between' }}>
+            <Text style={styles.msg}>
+              Good work filling out your daily log! Logging daily will allow you access to AI-driven insights and predictions.
+            </Text>
+          </View>}
       </View>
 
       <View style={tw`flex-row justify-between items-center mt-4`}>

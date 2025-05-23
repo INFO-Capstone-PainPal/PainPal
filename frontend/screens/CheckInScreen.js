@@ -7,11 +7,12 @@ import TimePickerComponent from "../components/TimePickerComponent";
 
 const BASE_URL = "http://localhost:8000";
 
-export default function CheckInScreen({ navigation }) {
+export default function CheckInScreen({ route, navigation }) {
     const [sleepDateTime, setSleepDateTime] = useState(new Date());
     const [awakeDateTime, setAwakeDateTime] = useState(new Date());
     const [medicationOptions, setMedicationOptions] = useState([]);
     const [selectedMedications, setSelectedMedications] = useState([]);
+    const { onCheckInSaved } = route.params;
 
     const pad = (n) => n.toString().padStart(2, "0");
 
@@ -68,7 +69,7 @@ export default function CheckInScreen({ navigation }) {
             if (!res.ok) {
                 throw new Error(data.detail || "Could not post daily log");
             }
-    
+            if (onCheckInSaved) onCheckInSaved();
             navigation.navigate("Main", { screen: "Home" });
         } catch (e) {
             console.error("Daily Log error", e);
