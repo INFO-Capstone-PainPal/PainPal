@@ -13,48 +13,52 @@ from sklearn.metrics import classification_report, confusion_matrix
 df = pd.read_csv('mig_data_test.csv')
 
 
-# Splitting to triggers and prediction
-X = df.drop(columns=["Migraine", "date"])
-y = df["Migraine"]
+def ml_model(df):
+    # Check if data is too small
+    if len(df) < 200:
+        print("⚠️ Log more daily check-ins to receive better analytics.")
+        return
 
+    # Split features and target
+    X = df.drop(columns=["Migraine", "date"])
+    y = df["Migraine"]
 
-# Train test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+    # Train model
+    rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+    rf_model.fit(X_train, y_train)
 
-# Random Forest Classifier Model
-rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
+    # SHAP explanation
+    explainer = shap.Explainer(rf_model, X_train)
+    shap_values = explainer(X_test, check_additivity=False)
+    shap_values_class1 = shap_values[..., 1]
+    shap_values_array = shap_values_class1.values
 
-y_pred = rf_model.predict(X_test)
+    # Mean predicted migraine risk across user data
+    mean_prediction = rf_model.predict_proba(X_test)[:, 1].mean()
 
+    # Mean SHAP values (keep sign to preserve direction)
+    mean_shap_signed = shap_values_array.mean(axis=0)
 
-# SHAP Explainer
-explainer = shap.TreeExplainer(rf_model)
-shap_values = explainer.shap_values(X_test)
+    # Create DataFrame of increasing-risk triggers
+    shap_df = pd.DataFrame({
+        'Feature': X_test.columns,
+        'Mean_SHAP': mean_shap_signed
+    }).query("Mean_SHAP > 0").sort_values(by='Mean_SHAP', ascending=False)
 
+    # Output for user
+    print(f"Based on your recent check-ins, your average daily migraine risk is {mean_prediction:.2%}.")
 
-# SHAP 
-explainer = shap.Explainer(rf_model, X_train)
-shap_values = explainer(X_test, check_additivity=False)
+    if shap_df.empty:
+        print("No triggers found that are consistently increasing your migraine risk.")
+    else:
+        print("Your top 3 contributing triggers are:")
+        for _, row in shap_df.head(3).iterrows():
+            name = row['Feature'].replace('_', ' ').lower()
+            print(f" - {name}")
+        print("\n These are the patterns most associated with an increased migraine risk in your recent check-ins.")
+        print("Try to be mindful of them in your daily routine — reducing or avoiding them may help lower your risk over time.")
 
-shap_values_class1 = shap_values[..., 1]
-
-
-# Printing out top 3 triggers
-shap_values_class1 = shap_values[..., 1]
-
-shap_values_array = shap_values_class1.values
-
-mean_shap = np.abs(shap_values_array).mean(axis=0)
-
-shap_df = pd.DataFrame({
-    'Feature': X_test.columns,
-    'Mean_SHAP': mean_shap
-}).sort_values(by='Mean_SHAP', ascending=False)
-
-top_3 = shap_df['Feature'].head(3).tolist()
-
-formatted_top_3 = [feat.replace('_', ' ').lower() for feat in top_3]
-
-print(f"Your top 3 triggers are {formatted_top_3[0]}, {formatted_top_3[1]}, and {formatted_top_3[2]}.")
+ml_model(df)
