@@ -32,3 +32,24 @@ def plot_monthly_migraines(df):
     )
 
     fig.show()
+
+# Refactored for dynamic DataFrame input
+def plot_monthly_migraines(df: pd.DataFrame) -> go.Figure:
+    df['date'] = pd.to_datetime(df['date'])
+    df['month'] = df['date'].dt.to_period('M').astype(str)
+    counts = df.groupby('month')['Migraine'].sum().reset_index()
+    fig = px.bar(counts, x='month', y='Migraine', title='Monthly Migraines')
+    return fig
+
+
+def plot_trigger_heatmap(df: pd.DataFrame) -> go.Figure:
+    trigger_cols = df.columns.difference(['Migraine', 'date', 'Total_sleep', 'Temperature', 'Pressure', 'Preventative_medication', 'Bedtime', 'Wake_time'])
+    if trigger_cols.empty:
+        return go.Figure()
+    correlations = df[trigger_cols].corrwith(df['Migraine'])
+    fig = px.imshow([correlations], 
+                    labels=dict(x="Trigger", y="Correlation"), 
+                    x=correlations.index,
+                    y=["Migraine Correlation"],
+                    title="Trigger Correlation Heatmap")
+    return fig

@@ -53,17 +53,3 @@ def create_checkin_with_streak(db: Session, user: User, checkin_data: CheckInCre
     db.commit()
     db.refresh(checkin)
     return checkin
-
-
-    @router.get("/streak")
-    def get_user_streak(
-        db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user),
-    ):
-        user = db.query(User).filter(User.id == current_user.id).first()
-
-        return {
-            "user_id": user.id,
-            "streak": user.streak,
-            "last_checkin_date": user.last_checkin_date,
-        }
