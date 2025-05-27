@@ -2,9 +2,9 @@ import logging as logger
 
 from sqlalchemy.orm import Session
 
-from db.models.user import User
+from backend.db.models.user import User
 from ..schemas.auth import UserCreate
-from utils.utils import get_password_hash, verify_password
+from backend.utils.utils import get_password_hash, verify_password
 
 def get_user(db: Session, username: str):
     return db.query(User).filter(User.username == username).first()

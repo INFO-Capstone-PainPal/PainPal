@@ -2,9 +2,9 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional, List
 
-from api.schemas.symptom import SymptomOption 
-from api.schemas.trigger import TriggerOption
-from api.schemas.medication import MedicationOption
+from backend.api.schemas.symptom import SymptomOption 
+from backend.api.schemas.trigger import TriggerOption
+from backend.api.schemas.medication import MedicationOption
 
 class WeatherData(BaseModel):
     temperature: float

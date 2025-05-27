@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from datetime import date
 
-from db.db_setup import get_db
-from utils.utils import get_current_active_user
-from db.models.user import User
-from api.schemas.check_in import CheckInCreate, CheckIn as CheckInSchema
-from db.models.checkin import CheckIn
-from api.crud import check_in as crud_checkin
+from backend.db.db_setup import get_db
+from backend.utils.utils import get_current_active_user
+from backend.db.models.user import User
+from backend.api.schemas.check_in import CheckInCreate, CheckIn as CheckInSchema
+from backend.db.models.checkin import CheckIn
+from backend.api.crud import check_in as crud_checkin
 
 router = APIRouter(prefix="/check-in")
 

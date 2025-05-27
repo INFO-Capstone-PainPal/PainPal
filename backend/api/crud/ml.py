@@ -1,7 +1,9 @@
 import pandas as pd
 from sqlalchemy.orm import Session
-from db.models.migraine import Migraine
-from db.models.trigger import TriggerOption
+
+from backend.db.models.checkin import CheckIn
+from backend.db.models.migraine import Migraine
+from backend.db.models.trigger import TriggerOption
 
 def get_migraine_dataframe_for_user(db: Session, user_id: int) -> pd.DataFrame:
     migraines = db.query(Migraine).filter(Migraine.user_id == user_id).all()
@@ -34,3 +36,49 @@ def get_migraine_dataframe_for_user(db: Session, user_id: int) -> pd.DataFrame:
         data.append(row)
 
     return pd.DataFrame(data)
+
+def get_combined_migraine_checkin_data(db: Session, user_id: int) -> pd.DataFrame:
+    # Step 1: Get migraines
+    migraines = (
+        db.query(Migraine)
+        .filter(Migraine.user_id == user_id)
+        .all()
+    )
+
+    migraine_data = []
+    for m in migraines:
+        migraine_data.append({
+            "migraine_id": m.id,
+            "start_time": m.start_time,
+            "pain_level": m.pain_level,
+            "weather": m.weather,
+            "date": m.start_time.date(),  # simplify
+        })
+
+    migraine_df = pd.DataFrame(migraine_data)
+
+    # Step 2: Get check-ins
+    checkins = (
+        db.query(CheckIn)
+        .filter(CheckIn.user_id == user_id)
+        .all()
+    )
+
+    checkin_data = []
+    for c in checkins:
+        checkin_data.append({
+            "checkin_date": c.checkin_date,
+            "total_sleep_hours": c.total_sleep_hours,
+            "weather_checkin": c.weather,
+        })
+
+    checkin_df = pd.DataFrame(checkin_data)
+
+    # Step 3: Merge on closest matching date
+    df = pd.merge(migraine_df, checkin_df, left_on="date", right_on="checkin_date", how="left")
+
+    # Add binary indicator for migraine presence
+    df["had_migraine"] = df["migraine_id"].notnull().astype(int)
+
+    return df
+

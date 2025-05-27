@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-df = pd.read_csv('mig_data_test.csv')
+# df = pd.read_csv('mig_data_test.csv')
 
 
 def plot_monthly_migraines(df):

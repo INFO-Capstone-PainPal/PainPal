@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
-
 from datetime import date, timedelta
-from db.models.checkin import CheckIn
-from db.models.user import User
-from api.schemas.check_in import CheckInCreate
-from db.models.medication import MedicationOption
-from utils.utils import calculate_sleep_hours
+
+from backend.db.models.checkin import CheckIn
+from backend.db.models.user import User
+from backend.api.schemas.check_in import CheckInCreate
+from backend.db.models.medication import MedicationOption
+from backend.utils.utils import calculate_sleep_hours
 
 def create_checkin_with_streak(db: Session, user: User, checkin_data: CheckInCreate):
     checkin_date = date.today()

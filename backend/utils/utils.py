@@ -8,10 +8,10 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from api.crud import auth
-from api.schemas.auth import UserInDB
-from api.schemas.token import TokenData
-from db.db_setup import get_db
+from backend.api.crud import auth
+from backend.api.schemas.auth import UserInDB
+from backend.api.schemas.token import TokenData
+from backend.db.db_setup import get_db
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
