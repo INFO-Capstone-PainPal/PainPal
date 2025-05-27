@@ -14,19 +14,6 @@ from ml.data_viz import plot_monthly_migraines, plot_trigger_heatmap
 router = APIRouter(prefix="/ml")
 
 @router.get("/top-triggers")
-def get_top_triggers():
-    df = pd.read_csv("mig_data_test.csv")  # or user-specific from DB
-    result = analyze_user_data(df)
-
-    if "warning" in result:
-        return {"warning": result["warning"]}
-
-    return {
-        "average_risk": result["mean_prediction"],
-        "top_triggers": result["top_triggers"]
-    }
-
-@router.get("/top-triggers")
 def get_top_triggers(db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     df = get_checkin_dataframe_for_user(db, current_user.id)
     result = analyze_user_data(df)
