@@ -16,7 +16,8 @@ def quick_log_migraine(entry: MigraineQuickCreate, db: Session = Depends(get_db)
     quick_migraine = crud_migraine.quick_create_migraine(
         db=db,
         user_id=current_user.id,
-        start_time=entry.start_time
+        start_time=entry.start_time,
+        weather=entry.weather
     )
     return quick_migraine
 
