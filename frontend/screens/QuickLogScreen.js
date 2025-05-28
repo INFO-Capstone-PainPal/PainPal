@@ -22,6 +22,7 @@ export default function QuickLogScreen({ navigation }) {
       const { latitude, longitude } = location.coords;
 
       const weather = await fetchWeatherData(latitude, longitude, startDateTime);
+      weather.pressure = weather.pressure * 0.02953; // Convert hPa to inHg
 
       // Format the date and time to match the expected format, not UTC time
       const localTimeString =
@@ -89,6 +90,7 @@ export default function QuickLogScreen({ navigation }) {
       const { latitude, longitude } = location.coords;
 
       const weather = await fetchWeatherData(latitude, longitude, startDateTime);
+      weather.pressure = weather.pressure * 0.02953; // Convert hPa to inHg
 
       // Format the date and time to match the expected format, not UTC time
       const localTimeString =

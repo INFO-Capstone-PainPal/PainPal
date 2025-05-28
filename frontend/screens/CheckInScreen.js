@@ -40,6 +40,7 @@ export default function CheckInScreen({ navigation }) {
             const { latitude, longitude } = location.coords;
     
             const weather = await fetchWeatherData(latitude, longitude, sleepDateTime);
+            weather.pressure = weather.pressure * 0.02953; // Convert hPa to inHg
     
             // format the date and time (diff then in quicklog)
             const formatTime = (date) => `${pad(date.getHours())}:${pad(date.getMinutes())}:00`;
