@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, ForeignKey, DateTime, JSON, ARRAY
 from sqlalchemy.orm import relationship
 
-from backend.db.db_setup import Base
-from backend.db.models.associations import association_symptom, association_medication, association_trigger
+from db.db_setup import Base
+from db.models.associations import association_symptom, association_medication, association_trigger
 
 class Migraine(Base):
     """
