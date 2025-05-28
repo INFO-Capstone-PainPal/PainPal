@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy_utils import EmailType
 from sqlalchemy.orm import relationship
 
-from db.db_setup import Base
-from db.models.checkin import CheckIn
+from backend.db.db_setup import Base
+from backend.db.models.checkin import CheckIn
 
 class User(Base):
     """

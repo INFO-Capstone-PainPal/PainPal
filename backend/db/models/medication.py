@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from db.db_setup import Base
-from db.models.associations import association_medication
+from backend.db.db_setup import Base
+from backend.db.models.associations import association_medication
 
 class MedicationOption(Base):
     """

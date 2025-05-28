@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import logging
 
-from api.routers import users, auth, migraines, check_in, options
-from db.models import *
+from backend.api.routers import users, auth, migraines, check_in, options, ml
+from backend.db.models import *
 
 app = FastAPI(
     title="PainPal",
@@ -19,3 +19,4 @@ app.include_router(auth.router)
 app.include_router(migraines.router)
 app.include_router(check_in.router)
 app.include_router(options.router)
+app.include_router(ml.router)

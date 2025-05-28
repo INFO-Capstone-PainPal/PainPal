@@ -1,5 +1,6 @@
 from sqlalchemy import Table, Column, ForeignKey
-from db.db_setup import Base
+
+from backend.db.db_setup import Base
 
 association_symptom = Table(
     "migraine_symptoms", Base.metadata,
