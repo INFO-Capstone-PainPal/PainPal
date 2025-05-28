@@ -1,9 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-
-from backend.db.models.user import User
+from db.models.user import User
 from ..schemas.auth import UserUpdate
-from backend.utils.utils import get_password_hash
+from utils.utils import get_password_hash
 
 def update_user(db: Session, user_update: UserUpdate, user_id: int):
     db_user = db.query(User).filter(User.id == user_id).first()

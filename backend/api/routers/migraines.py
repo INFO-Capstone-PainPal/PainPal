@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import Optional
 from sqlalchemy.orm import Session
 
-from backend.api.crud import migraine as crud_migraine
-from backend.api.schemas.migraine import Migraine, MigraineCompleteUpdate, MigraineQuickCreate
-from backend.db.models.user import User
-from backend.db.db_setup import get_db
-from backend.utils.utils import get_current_active_user
+from api.crud import migraine as crud_migraine
+from api.schemas.migraine import Migraine, MigraineCompleteUpdate, MigraineQuickCreate
+from db.models.user import User
+from db.db_setup import get_db
+from utils.utils import get_current_active_user
 
 router = APIRouter(prefix="/migraines")
 

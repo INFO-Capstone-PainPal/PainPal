@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 
-from backend.db.models.symptom import SymptomOption
-from backend.db.models.trigger import TriggerOption
-from backend.db.models.medication import MedicationOption
-from backend.db.models.migraine import Migraine
-from backend.api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate, WeatherData
+from db.models.symptom import SymptomOption
+from db.models.trigger import TriggerOption
+from db.models.medication import MedicationOption
+from db.models.migraine import Migraine
+from api.schemas.migraine import MigraineCreate, MigraineCompleteUpdate, WeatherData
 
 def create_migraine_log(db: Session, migraine: MigraineCreate, user_id: int):
     db_migraine = Migraine(**migraine.model_dump(exclude={"symptoms", "triggers", "medications"}), user_id=user_id)

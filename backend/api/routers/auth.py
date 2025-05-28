@@ -3,12 +3,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta
+from api.schemas.token import Token
 from jose import JWTError, jwt
-
-from backend.api.schemas.token import Token
-from backend.db.db_setup import get_db
-from backend.utils.utils import create_access_token, blacklist_token, oauth2_scheme
-from backend.api.crud.auth import authenticate_user
+from db.db_setup import get_db
+from utils.utils import create_access_token, blacklist_token, oauth2_scheme
+from api.crud.auth import authenticate_user
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")

@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, ForeignKey, Date, UniqueConstraint, Floa
 from sqlalchemy.orm import relationship
 from datetime import date
 
-from backend.db.db_setup import Base
-from backend.db.models.associations import checkin_medications
+from db.db_setup import Base
+from db.models.associations import checkin_medications
 
 class CheckIn(Base):
     __tablename__ = "checkins"

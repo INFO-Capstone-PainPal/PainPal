@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from backend.db.db_setup import get_db
-from backend.db.models.symptom import SymptomOption
-from backend.db.models.trigger import TriggerOption
-from backend.db.models.medication import MedicationOption
+from db.db_setup import get_db
+from db.models.symptom import SymptomOption
+from db.models.trigger import TriggerOption
+from db.models.medication import MedicationOption
 
 router = APIRouter(prefix="/options")
 
