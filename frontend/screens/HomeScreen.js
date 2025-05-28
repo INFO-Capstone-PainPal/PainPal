@@ -199,7 +199,7 @@ export default function HomeScreen({ navigation }) {
         {displayCheckIn ?
           <View style={{ flex: 1, justifyContent: 'space-between' }}>
             <Text style={styles.msg}>
-              Logging daily will allow you access to AI-driven insights and predictions. Don't forget to fill out your daily log!
+              Logging daily will allow you access to data-driven insights. Don't forget to fill out your daily log!
             </Text>
 
             <TouchableOpacity onPress={handleCheckInPress} style={styles.checkInButton}>
@@ -207,12 +207,12 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View> :  <View style={{ flex: 1, justifyContent: 'space-between' }}>
             <Text style={styles.msg}>
-              Good work filling out your daily log! Logging daily will allow you access to AI-driven insights and predictions.
+              Good work filling out your daily log! Logging daily will allow you access to data-driven insights.
             </Text>
           </View>}
       </View>
 
-      <View style={tw`flex-row justify-between items-center mt-4`}>
+      <View style={tw`flex-row justify-center mt-4`}>
         {[1, 2, 3, 4, 5, 6, 7].map((step, index) => {
           const isActive = step <= currentStep;
           return (
