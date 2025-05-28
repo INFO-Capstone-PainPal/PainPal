@@ -53,3 +53,31 @@ def plot_trigger_heatmap(df: pd.DataFrame) -> go.Figure:
                     y=["Migraine Correlation"],
                     title="Trigger Correlation Heatmap")
     return fig
+
+# Top 10 Triggers Visualization (slightly edited for backend)
+def top_10_triggers(df):
+    binary_trigger_cols = [
+        col for col in df.columns
+        if df[col].dropna().isin([0, 1]).all() and col != 'Migraine'
+    ]
+
+    trigger_counts = df[binary_trigger_cols].sum().sort_values(ascending=False)
+    top10 = trigger_counts.head(10)
+    formatted_names = [name.replace('_', ' ').title() for name in top10.index]
+
+    fig = go.Figure(data=[
+        go.Bar(
+            x=formatted_names,
+            y=top10.values,
+            marker_color="#665EA5"
+        )
+    ])
+
+    fig.update_layout(
+        title="Top 10 Migraine Triggers by Count",
+        xaxis_title="Trigger",
+        yaxis_title="Count",
+        xaxis_tickangle=45
+    )
+
+    return fig
