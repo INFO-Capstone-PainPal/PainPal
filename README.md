@@ -161,7 +161,7 @@ Our app aims to empower individuals by providing accessible, personalized, and d
 1. **Clone the repository**
    ```bash
    git clone https://github.com/INFO-Capstone-PainPal/PainPal.git
-   cd <your-project-folder>/frontend
+   cd PainPal/frontend
    ```
 
 2. **Install dependencies**
