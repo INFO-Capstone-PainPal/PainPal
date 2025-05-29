@@ -147,12 +147,48 @@ Our app aims to empower individuals by providing accessible, personalized, and d
  To get a local copy up and running follow these steps.
 
 ### Prerequisites
--   TBD
+- [Node.js and npm](https://nodejs.org/) (LTS recommended)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+  ```bash
+  npm install -g expo-cli
+  ```
+- [PostgreSQL](https://www.postgresql.org/download/) (used for backend database)
 
-### Installation
+---
 
-#### Frontend
-1.  TBD
+### Frontend Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/INFO-Capstone-PainPal/PainPal.git
+   cd <your-project-folder>/frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Create an `.env` file**
+
+   In the `frontend` folder, create a `.env` file and add the required API keys and URLs.  
+   Example:
+   ```env
+   API KEYS
+   ```
+
+---
+
+### Running on macOS (iOS Simulator)
+
+1. Install [Xcode](https://developer.apple.com/xcode/) and the included iPhone simulator.
+
+2. Start the Expo server and run on the iOS Simulator in the frontend terminal:
+   ```bash
+   npm run ios
+   ```
+
+   This will launch the Expo development server and open the iOS simulator automatically.
 
 #### Backend
 <!-- NOTE: LOOK INTO SEEING IF NOT YOU NEED TO DO ALEMBIC COMMANDS TO GET TABLES? IDK -->
