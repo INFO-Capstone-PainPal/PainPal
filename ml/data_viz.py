@@ -21,7 +21,7 @@ def plot_monthly_migraines(df):
         go.Bar(
             x=month_names,
             y=monthly_migraine_counts.values,
-            marker_color="#665EA5"
+            marker_color="#675FA6"
         )
     ])
 
@@ -38,7 +38,19 @@ def plot_monthly_migraines(df: pd.DataFrame) -> go.Figure:
     df['date'] = pd.to_datetime(df['date'])
     df['month'] = df['date'].dt.to_period('M').astype(str)
     counts = df.groupby('month')['Migraine'].sum().reset_index()
-    fig = px.bar(counts, x='month', y='Migraine', title='Monthly Migraines')
+    counts['month'] = pd.to_datetime(counts['month'])
+    counts['label'] = counts['month'].dt.strftime('%b %Y')
+
+    fig = px.bar(counts, x='label', y='Migraine', title='Monthly Migraines')
+
+    fig.update_layout(
+        font=dict(size=16, color="white"),
+        plot_bgcolor="#4D4471",
+        paper_bgcolor="#4D4471",
+        xaxis_title='Month',
+        yaxis_title='Number of Migraines'
+    )
+
     return fig
 
 
@@ -52,6 +64,14 @@ def plot_trigger_heatmap(df: pd.DataFrame) -> go.Figure:
                     x=correlations.index,
                     y=["Migraine Correlation"],
                     title="Trigger Correlation Heatmap")
+    
+    fig.update_layout(
+        font=dict(size=16, color="white"),
+        xaxis_tickangle=45,
+        plot_bgcolor="#4D4471",
+        paper_bgcolor="#4D4471"
+    )
+
     return fig
 
 # Top 10 Triggers Visualization (slightly edited for backend)
@@ -69,7 +89,7 @@ def top_10_triggers(df):
         go.Bar(
             x=formatted_names,
             y=top10.values,
-            marker_color="#665EA5"
+            marker_color="#675FA6"
         )
     ])
 
@@ -77,7 +97,10 @@ def top_10_triggers(df):
         title="Top 10 Migraine Triggers by Count",
         xaxis_title="Trigger",
         yaxis_title="Count",
-        xaxis_tickangle=45
+        xaxis_tickangle=45,
+        font=dict(size=16, color="white"),
+        plot_bgcolor="#4D4471",
+        paper_bgcolor="#4D4471"
     )
 
     return fig
