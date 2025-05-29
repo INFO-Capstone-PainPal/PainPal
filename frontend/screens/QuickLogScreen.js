@@ -69,7 +69,7 @@ export default function QuickLogScreen({ navigation }) {
           throw new Error(weatherData || "Could not fetch weather data");
         } else {
           return {
-          temp: weatherData.list[0].main.temp,
+          temperature: weatherData.list[0].main.temp,
           humidity: weatherData.list[0].main.humidity,
           description: weatherData.list[0].weather[0].description,
           pressure: weatherData.list[0].main.pressure,
