@@ -4,8 +4,7 @@ import tw from "tailwind-react-native-classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from '@env';
 
 export default function ProfileScreen({ navigation, route }) {
 

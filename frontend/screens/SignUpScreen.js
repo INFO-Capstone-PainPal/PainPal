@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import tw from "tailwind-react-native-classnames";
-
-const BASE_URL = "http://localhost:8000";
-
-// For Android emulator, use this instead:
-// const BASE_URL = "http://10.0.2.2:8000";
+import { BASE_URL } from '@env';
 
 export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");

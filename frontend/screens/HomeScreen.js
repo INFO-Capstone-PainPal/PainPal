@@ -5,8 +5,7 @@ import * as Location from 'expo-location';
 import { SvgUri } from 'react-native-svg';
 import { GOOGLE_API_KEY } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from '@env';
 
 export default function HomeScreen({ navigation }) {
   const [currentStep, setCurrentStep] = useState(0);

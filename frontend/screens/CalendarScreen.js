@@ -3,11 +3,7 @@ import { View, ScrollView, Text, TouchableOpacity, StyleSheet, ActivityIndicator
 import { Calendar } from "react-native-calendars";
 import tw from "tailwind-react-native-classnames";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const BASE_URL = "http://localhost:8000";
-
-// For Android emulator, use this instead:
-// const BASE_URL = "http://10.0.2.2:8000";
+import { BASE_URL } from '@env';
 
 const painDescriptions = [
   "No pain",
