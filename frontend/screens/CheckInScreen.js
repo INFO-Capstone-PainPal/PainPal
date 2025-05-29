@@ -4,8 +4,7 @@ import tw from "tailwind-react-native-classnames";
 import { OPENWEATHER_API_KEY } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TimePickerComponent from "../components/TimePickerComponent";
-
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from '@env';
 
 export default function CheckInScreen({ route, navigation }) {
     const [sleepDateTime, setSleepDateTime] = useState(new Date());

@@ -4,11 +4,8 @@ import tw from "tailwind-react-native-classnames";
 import TimePickerComponent from "../components/TimePickerComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OPENWEATHER_API_KEY } from '@env';
+import { BASE_URL } from '@env';
 
-const BASE_URL = "http://localhost:8000";
-
-// For Android emulator, use this instead:
-// const BASE_URL = "http://10.0.2.2:8000";
 
 export default function QuickLogScreen({ navigation }) {
   const [startDateTime, setStartDateTime] = useState(new Date());

@@ -3,11 +3,7 @@ import { View, ScrollView, TouchableOpacity, StyleSheet, Text, ActivityIndicator
 import tw from 'tailwind-react-native-classnames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TimePickerComponent from '../components/TimePickerComponent';
-
-const BASE_URL = "http://localhost:8000";
-
-// For Android emulator, use this instead:
-// const BASE_URL = "http://10.0.2.2:8000";
+import { BASE_URL } from '@env';
 
 export default function MigraineDetailScreen({ route, navigation }) {
   const { logId } = route.params;
