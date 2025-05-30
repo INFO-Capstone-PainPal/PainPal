@@ -169,39 +169,66 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 ### Installation
 
 #### Frontend
+
 1. Clone the repo
 ```
 git clone https://github.com/INFO-Capstone-PainPal/PainPal.git
 ```
+
 2. Install Expo CLI
 ```
 npm install -g expo-cli
 ```
+
 3. Navigate to the frontend 
 ```
 cd frontend
 ```
+
 4. Install frontend dependencies
 ```
 npm install
 ```
-5. Get your local IP Address (Mac)
+
+5. If you are running on a real device, go through steps 5 and 6. Otherwise move to step 7.
+
+Get your IP Address
+
+Mac
 ```
-ipconfig getifaddr en0
+ipconfig getifaddr en0 
 ```
+
+If on ethernet (or en0 does not work)
+```
+ipconfig getifaddr en1
+```
+
+Windows
+```
+ipconfig | findstr /i "IPv4 (Windows)
+```
+
+6. Follow step 7 but for BASE_URL, paste in this: 
+```
+BASE_URL=http://{youripaddress}:8000/ 
+```
+
 7. Create file name `.env` in the root of the frontend directory. Add the following:
 ```
 OPENWEATHER_API_KEY=
 GOOGLE_API_KEY=
-# For iOS
+# For iOS Sim
 # BASE_URL=http://step5:8000
-# For Android
+# For Android Emulator
 # BASE_URL=http://10.0.2.2:8000
 ```
+
 8. Start the development server
 ```
 npx expo start --clear
 ```
+
 9. Launch your simulator
 - Press `a` to open the Android emulator (must be running Android Studio).
 - Press `i` to open the iOS simulator (Mac only, must have Xcode installed).
@@ -232,6 +259,11 @@ Additionally run the seed_script.py file under db to populate the database with 
 4. From the root of the project, run the FastAPI backend server
 ```
 uvicorn backend.main:app --reload --env-file backend/.env
+```
+
+Or if you had to go through steps 5 and 6 from setting up the frontend, run this command instead from the root of the project:
+```
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000 --env-file backend/.env 
 ```
 
 <p align=“right”>(<a href=“#readme-top”>back to top</a>)</p>
