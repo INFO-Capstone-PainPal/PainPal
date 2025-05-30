@@ -1,6 +1,7 @@
 import logging as logger
-
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException
 
 from backend.db.models.user import User
 from ..schemas.auth import UserCreate
@@ -17,9 +18,13 @@ def create_user(db: Session, user_create: UserCreate):
         hashed_password=get_password_hash(user_create.password)
     )
     db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+    try:
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Email already registered.")
 
 def authenticate_user(db: Session, username: str, password: str):
     user = get_user(db, username)
