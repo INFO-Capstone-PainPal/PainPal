@@ -12,7 +12,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import QuickLogScreen from "./screens/QuickLogScreen";
 import MultiSelectScreen from "./screens/MultiSelectScreen";
 import PainMapScreen from "./screens/PainMapScreen";
-import { AppSettingsScreen, ProfileSettingsScreen } from "./screens/SettingsScreen";
+import { AppSettingsScreen, ProfileSettingsScreen, ChangeEmailScreen, ChangePasswordScreen, DeleteAccountScreen } from "./screens/SettingsScreen";
 import ExportScreen from "./screens/ExportScreen";
 import MigraineDetailScreen from "./screens/MigraineDetailScreen";
 import CheckInScreen from "./screens/CheckInScreen";
@@ -36,6 +36,9 @@ function NavBar() {
         <ProfileStackNav.Screen name="AppSettings" component={AppSettingsScreen} />
         <ProfileStackNav.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
         <ProfileStackNav.Screen name="Export" component={ExportScreen} />
+        <ProfileStackNav.Screen name="Password" component={ChangePasswordScreen} />
+        <ProfileStackNav.Screen name="Email" component={ChangeEmailScreen} />
+        <ProfileStackNav.Screen name="Delete" component={DeleteAccountScreen} />
       </ProfileStackNav.Navigator>
     );
   }
