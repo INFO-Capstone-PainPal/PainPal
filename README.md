@@ -81,16 +81,21 @@ Our project aims to create a **digital caregiver platform** that goes beyond bas
    - Optional notes to record additional details (e.g., potential triggers, medications taken).
 
 2. **Data Analysis and Insights:**
-   - Advanced analytics to identify correlations between migraines and potential triggers (e.g., weather, sleep, stress, diet).
-   - Visualizations (e.g., charts, graphs) to help users understand patterns and trends in their symptoms.
+    - Advanced analytics to identify correlations between migraines and potential triggers (e.g., weather, sleep, stress, diet).
+    - Visualizations (e.g., charts, graphs) to help users understand patterns and trends in their symptoms.
 
-3. **Personalized Recommendations:**
-   - Tailored suggestions for avoiding triggers and managing symptoms (e.g., hydration reminders, stress-reduction techniques).
-   - Predictive analytics to warn users of potential migraine flare-ups based on historical data.
+3. **Smart Predictions:**
+    - Predictive modeling to estimate the user’s average daily migraine risk based on historical patterns.
+    - Personalized warnings for potential migraine days based on recent trends.
 
-4. **Privacy and Security:**
-   - On-device data processing to ensure user privacy and security.
-   - Transparent data practices with clear opt-in/opt-out options for data sharing.
+4. **Trigger and Symptom Management:**
+    - Customizable selection of common migraine triggers and symptoms during check-ins.
+    - Top 10 trigger reports based on frequency and correlation with migraines.
+    - Insight into which triggers most strongly contribute to migraines using SHAP interpretability.
+
+5. **Medication Tracking:**
+    - Ability to log preventative and responsive medications during or after migraine episodes.
+    - Association of medications with individual migraine logs for better treatment tracking.
 
 ---
 
@@ -149,6 +154,17 @@ Our app aims to empower individuals by providing accessible, personalized, and d
 ### Prerequisites
 -   Android Studio Virtual Device Manager (Windows)
 -   Xcode Simulator (MacOS)
+-   Python 3.10 or above
+-   PostgreSQL running and accessible
+-   `pip` for Python package management
+-    A .env file configured in backend/.env with the following keys:
+
+```env
+DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<dbname>
+SECRET_KEY=your_secret_key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
 
 ### Installation
 
@@ -193,24 +209,44 @@ npx expo start --clear
 
 #### Backend
 <!-- NOTE: LOOK INTO SEEING IF NOT YOU NEED TO DO ALEMBIC COMMANDS TO GET TABLES? IDK -->
-1.  TBD
+1.  Create and activate a virtual environment
+```
+python3 -m venv .venv
+source .venv/bin/activate  # For Windows: .venv\Scripts\activate
+```
+
+2. Install dependencies
+```
+pip install -r backend/requirements.txt
+```
+
+3. Apply database migrations (SEE BELOW FIRST)
+```
+alembic upgrade head
+```
+
+Note: If you're using the shared production or staging database, you do not need to run Alembic migrations. Migrations are only necessary if you're initializing a new local PostgreSQL instance or modifying the schema. If you haven’t initialized Alembic before, make sure your alembic.ini and env.py files are configured correctly.
+
+Additionally run the seed_script.py file under db to populate the database with list of medications, triggers, and symptoms.
+
+4. From the root of the project, run the FastAPI backend server
+```
+uvicorn backend.main:app --reload --env-file backend/.env
+```
 
 <p align=“right”>(<a href=“#readme-top”>back to top</a>)</p>
 
 <!-- ROADMAP -->
 
-## Roadmap
-
--   [] TBD
 
 <!-- CONTACT -->
 ## Contact
 
-<p>Joey Kang - <a href="https://www.linkedin.com/in/joey--kang/">LinkedIn</a> - <a href= "mailto: joeykang@uw.edu"> joeykang@uw.edu </a></p>
-<p>Diana Tran - <a href="https://www.linkedin.com/in/diana-tran-33b30a217/">LinkedIn</a> - <a href= "mailto: dianayt@uw.edu"> dianayt@uw.edu </a></p>
-<p>Cam Bun - <a href="https://www.linkedin.com/in/woncamm-bun/">LinkedIn</a> - <a href= "mailto: wbun@uw.edu"> wbun@uw.edu </a></p>
-<p>Kai Tinder - <a href="https://www.linkedin.com/in/kai-tinder/">LinkedIn</a> - <a href= "mailto: kaitinde@uw.edu"> kaitinde@uw.edu </a></p>
-<p>Eric Kim - <a href="https://www.linkedin.com/in/eric-kim-uw-info/">LinkedIn</a> - <a href= "mailto: kimeri21@uw.edu"> kimeri21@uw.edu </a></p>
+<p>Joey Kang - <a href="https://www.linkedin.com/in/joey--kang/">LinkedIn</a> - <a href= "mailto: joeykang96@gmail.com"> joeykang96@gmail.com </a></p>
+<p>Diana Tran - <a href="https://www.linkedin.com/in/diana-tran-33b30a217/">LinkedIn</a>
+<p>Cam Bun - <a href="https://www.linkedin.com/in/woncamm-bun/">LinkedIn</a>
+<p>Kai Tinder - <a href="https://www.linkedin.com/in/kai-tinder/">LinkedIn</a>
+<p>Eric Kim - <a href="https://www.linkedin.com/in/eric-kim-uw-info/">LinkedIn</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
