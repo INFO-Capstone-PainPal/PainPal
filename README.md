@@ -147,12 +147,49 @@ Our app aims to empower individuals by providing accessible, personalized, and d
  To get a local copy up and running follow these steps.
 
 ### Prerequisites
--   TBD
+-   Android Studio Virtual Device Manager (Windows)
+-   Xcode Simulator (MacOS)
 
 ### Installation
 
 #### Frontend
-1.  TBD
+1. Clone the repo
+```
+git clone https://github.com/INFO-Capstone-PainPal/PainPal.git
+```
+2. Install Expo CLI
+```
+npm install -g expo-cli
+```
+3. Navigate to the frontend 
+```
+cd frontend
+```
+4. Install frontend dependencies
+```
+npm install
+```
+5. Get your local IP Address (Mac)
+```
+ipconfig getifaddr en0
+```
+7. Create file name `.env` in the root of the frontend directory. Add the following:
+```
+OPENWEATHER_API_KEY=
+GOOGLE_API_KEY=
+# For iOS
+# BASE_URL=http://step5:8000
+# For Android
+# BASE_URL=http://10.0.2.2:8000
+```
+8. Start the development server
+```
+npx expo start --clear
+```
+9. Launch your simulator
+- Press `a` to open the Android emulator (must be running Android Studio).
+- Press `i` to open the iOS simulator (Mac only, must have Xcode installed).
+
 
 #### Backend
 <!-- NOTE: LOOK INTO SEEING IF NOT YOU NEED TO DO ALEMBIC COMMANDS TO GET TABLES? IDK -->
