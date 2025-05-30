@@ -8,7 +8,7 @@ from backend.db.models.user import User
 from backend.db.db_setup import get_db
 from backend.utils.utils import get_current_active_user
 
-router = APIRouter(prefix="/migraines")
+router = APIRouter(prefix="/migraines", tags=["migraines"])
 
 # Quick log router
 @router.post("/quick-log", response_model=Migraine)

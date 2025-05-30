@@ -6,7 +6,7 @@ from backend.db.models.symptom import SymptomOption
 from backend.db.models.trigger import TriggerOption
 from backend.db.models.medication import MedicationOption
 
-router = APIRouter(prefix="/options")
+router = APIRouter(prefix="/options", tags=["options"])
 
 @router.get("/")
 def get_all_options(db: Session = Depends(get_db)):

@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-router = APIRouter()
+router = APIRouter(tags=["auth"])
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(

@@ -9,7 +9,7 @@ from backend.api.schemas.check_in import CheckInCreate, CheckIn as CheckInSchema
 from backend.db.models.checkin import CheckIn
 from backend.api.crud import check_in as crud_checkin
 
-router = APIRouter(prefix="/check-in")
+router = APIRouter(prefix="/check-in", tags=["check in"])
 
 @router.post("/", response_model=CheckInSchema)
 def submit_checkin(
