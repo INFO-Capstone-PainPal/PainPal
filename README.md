@@ -244,7 +244,7 @@ source .venv/bin/activate  # For Windows: .venv\Scripts\activate
 
 2. Install dependencies
 ```
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
 ```
 
 3. Apply database migrations (SEE BELOW FIRST)
