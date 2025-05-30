@@ -4,12 +4,30 @@ import tw from "tailwind-react-native-classnames";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from '@env';
 
+// Helper method to fetch an image as a base64 string
+const fetchImageAsBase64 = async (url, token) => {
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` }, // Android would not allow fetching in Image tag
+  });
+  const blob = await res.blob();
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+};
+
 export default function ChartsScreen() {
   const [averageRisk, setAverageRisk] = useState(null);
   const [topTriggers, setTopTriggers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
+
+  const [monthlyImage, setMonthlyImage] = useState(null);
+  const [heatImage, setHeatImage] = useState(null);
+  const [countImage, setCountImage] = useState(null);
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -44,6 +62,27 @@ export default function ChartsScreen() {
   
     fetchInsights();
   }, []);  
+
+  useEffect(() => {
+    if (!token) return;
+
+    const loadImages = async () => {
+      try {
+        const [monthly, heat, triggers] = await Promise.all([
+          fetchImageAsBase64(`${BASE_URL}/ml/visualizations/monthly`, token),
+          fetchImageAsBase64(`${BASE_URL}/ml/visualizations/triggers`, token),
+          fetchImageAsBase64(`${BASE_URL}/ml/ml/trigger-graph`, token),
+        ]);
+        setMonthlyImage(monthly);
+        setHeatImage(heat);
+        setCountImage(triggers);
+      } catch (err) {
+        console.error("Failed to load chart images:", err);
+      }
+    };
+
+    loadImages();
+  }, [token]);
 
   if (loading) {
     return (
@@ -84,42 +123,45 @@ export default function ChartsScreen() {
             Migraines Per Month
           </Text>
           <View style={styles.imageWrapper}>
-            <Image
-              source={{
-                uri: `${BASE_URL}/ml/visualizations/monthly`,
-                headers: { Authorization: `Bearer ${token}` },
-              }}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            {!monthlyImage ? (
+              <ActivityIndicator size="large" color="#FFFFFF" style={tw`m-5`} />
+            ) : (
+              <Image
+                source={{ uri: monthlyImage }}
+                style={styles.image}
+                resizeMode="contain"
+              />
+            )}
           </View>
 
           <Text style={tw`text-white text-lg font-bold mt-6 ml-5`}>
             Trigger Correlations
           </Text>
           <View style={styles.imageWrapper}>
-            <Image
-              source={{
-                uri: `${BASE_URL}/ml/visualizations/triggers`,
-                headers: { Authorization: `Bearer ${token}` },
-              }}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            {!heatImage ? (
+              <ActivityIndicator size="large" color="#FFFFFF" style={tw`m-5`} />
+            ) : (
+              <Image
+                source={{ uri: heatImage }}
+                style={styles.image}
+                resizeMode="contain"
+              />
+            )}
           </View>
 
           <Text style={tw`text-white text-lg font-bold mt-6 ml-5`}>
             Top 10 Triggers by Count
           </Text>
           <View style={styles.imageWrapper}>
-            <Image
-              source={{
-                uri: `${BASE_URL}/ml/ml/trigger-graph`,
-                headers: { Authorization: `Bearer ${token}` },
-              }}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            {!countImage ? (
+              <ActivityIndicator size="large" color="#FFFFFF" style={tw`m-5`} />
+            ) : (
+              <Image
+                source={{ uri: countImage }}
+                style={styles.image}
+                resizeMode="contain"
+              />
+            )}
           </View>
         </>
       )}
