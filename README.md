@@ -219,7 +219,7 @@ BASE_URL=http://{youripaddress}:8000/
 OPENWEATHER_API_KEY=
 GOOGLE_API_KEY=
 # For iOS Sim
-# BASE_URL=http://step5:8000
+# BASE_URL=http://localhost:8000
 # For Android Emulator
 # BASE_URL=http://10.0.2.2:8000
 ```
@@ -232,6 +232,9 @@ npx expo start --clear
 9. Launch your simulator
 - Press `a` to open the Android emulator (must be running Android Studio).
 - Press `i` to open the iOS simulator (Mac only, must have Xcode installed).
+- Scan the QR code to open the Expo Go app on your mobile device
+
+10. Allow Location Services on your device or simulator. This is necessary for weather data.
 
 
 #### Backend
