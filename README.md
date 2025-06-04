@@ -250,7 +250,18 @@ source .venv/bin/activate  # For Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Apply database migrations (SEE BELOW FIRST)
+3. Install and start Redis:
+
+    #### On macOS:
+    ```sh
+    brew install redis
+    brew services start redis
+    ```
+
+    #### On Windows:
+    Follow the instructions on the redis website linked [here](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-windows/)
+
+4. Apply database migrations (SEE BELOW FIRST)
 ```
 alembic upgrade head
 ```
@@ -259,7 +270,7 @@ Note: If you're using the shared production or staging database, you do not need
 
 Additionally run the seed_script.py file under db to populate the database with list of medications, triggers, and symptoms.
 
-4. From the root of the project, run the FastAPI backend server
+5. From the root of the project, run the FastAPI backend server
 ```
 uvicorn backend.main:app --reload --env-file backend/.env
 ```
